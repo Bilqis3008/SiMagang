@@ -96,6 +96,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/guru/penilaian/{nisn}', [GuruPenilaianController::class, 'storePenilaian'])->name('guru.penilaian.store');
     Route::get('/guru/penilaian/{nisn}/export', [GuruLaporanController::class, 'exportPenilaian'])->name('guru.penilaian.export');
 
+    // Pesan
+    Route::get('/guru/pesan', [\App\Http\Controllers\PesanController::class, 'index'])->name('guru.pesan');
+    Route::get('/guru/pesan/{nisn}', [\App\Http\Controllers\PesanController::class, 'show'])->name('guru.pesan.show');
+    Route::post('/guru/pesan/{nisn}', [\App\Http\Controllers\PesanController::class, 'store'])->name('guru.pesan.store');
+
     // Manajemen Kriteria Penilaian Guru (Dynamic)
     Route::post('/guru/kriteria', [GuruPenilaianController::class, 'storeKriteria'])->name('guru.kriteria.store');
     Route::put('/guru/kriteria/{id}', [GuruPenilaianController::class, 'updateKriteria'])->name('guru.kriteria.update');
@@ -138,6 +143,11 @@ Route::middleware('auth')->group(function () {
     // Pengajuan Siswa
     Route::get('/pembimbing/pengajuan', [PembimbingPengajuanController::class, 'pengajuanSiswa'])->name('pembimbing.pengajuan');
     Route::post('/pembimbing/pengajuan/{id}', [PembimbingPengajuanController::class, 'updatePengajuan'])->name('pembimbing.pengajuan.update');
+
+    // Pesan
+    Route::get('/pembimbing/pesan', [\App\Http\Controllers\PesanController::class, 'index'])->name('pembimbing.pesan');
+    Route::get('/pembimbing/pesan/{nisn}', [\App\Http\Controllers\PesanController::class, 'show'])->name('pembimbing.pesan.show');
+    Route::post('/pembimbing/pesan/{nisn}', [\App\Http\Controllers\PesanController::class, 'store'])->name('pembimbing.pesan.store');
 
     // Reporting
     Route::get('/pembimbing/siswa/{nisn}/cetak-jurnal', [PembimbingLaporanController::class, 'cetakJurnalSiswa'])->name('pembimbing.siswa.cetakJurnal');

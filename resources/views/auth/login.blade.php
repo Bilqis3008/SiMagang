@@ -4,103 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Monitoring Siswa Magang</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome -->
+    
+    <!-- Fonts & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/auth/login.css') }}">
 </head>
 
-<body>
+<body class="login-page">
 
-<div class="login-container">
-    <div class="card login-card">
-        <div class="card-header text-center login-header">
-            <h4 class="login-title">LOGIN</h4>
-            <p class="login-subtitle">Monitoring Siswa Magang</p>
-            <span class="login-accent"></span>
-        </div>        
-        
-
-        <div class="card-body">
-
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
+    <div class="login-container">
+        <div class="login-box">
+            
+            <!-- LEFT SIDE: BRANDING/INFO -->
+            <div class="login-info-section">
+                <div class="info-overlay"></div>
+                <div class="info-content">
+                    <img src="{{ asset('images/unsri-pride.png') }}" alt="Logo UNSRI" class="info-logo">
+                    <h2>Monitoring Siswa Magang</h2>
+                    <p>Sistem Informasi Monitoring Siswa Magang SMA/SMK Pada Fakultas Ilmu Komputer Universitas Sriwijaya</p>
+                    <div class="info-divider"></div>
                 </div>
-            @endif
+            </div>
 
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <form method="post" action="{{ route('login') }}" novalidate>
-                @csrf
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email"
-                           name="email"
-                           id="email"
-                           class="form-control"
-                           required
-                           value="{{ old('email') }}">
-                </div>
-
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <div class="input-group">
-                        <input type="password"
-                               name="password"
-                               id="password"
-                               class="form-control"
-                               required>
-                        <button class="btn btn-outline-secondary toggle-password" type="button" id="btnTogglePassword">
-                            <i class="fas fa-eye"></i>
-                        </button>
+            <!-- RIGHT SIDE: FORM INPUT -->
+            <div class="login-form-section">
+                <div class="form-content">
+                    <div class="mobile-logo">
+                        <img src="{{ asset('images/unsri-pride.png') }}" alt="Logo UNSRI">
+                        <h3>Monitoring Siswa</h3>
                     </div>
+
+                    <h2 class="form-title">Selamat Datang</h2>
+                    <p class="form-subtitle">Silakan masuk ke akun Anda</p>
+
+                    <!-- Alerts -->
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i> {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i> Email atau password salah.
+                        </div>
+                    @endif
+
+                    <form method="post" action="{{ route('login') }}" novalidate>
+                        @csrf
+
+                        <div class="form-group">
+                            <label class="form-label">EMAIL</label>
+                            <input type="email" 
+                                   name="email" 
+                                   class="form-control" 
+                                   placeholder="nama@email.com"
+                                   required 
+                                   value="{{ old('email') }}"
+                                   autofocus>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">PASSWORD</label>
+                            <div class="input-group">
+                                <input type="password" 
+                                       name="password" 
+                                       id="password" 
+                                       class="form-control" 
+                                       placeholder="••••••••"
+                                       required>
+                                <button class="toggle-password" type="button" id="btnTogglePassword">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="btn-login">LOGIN</button>
+
+                        <div class="form-footer">
+                            <p class="register-link">
+                                Belum punya akun? <a href="{{ route('register') }}"><b>Daftar Sekarang</b></a>
+                            </p>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="d-flex justify-content-between align-items-center">
-                    <a href="{{ route('register') }}" class="register-link">
-                        Belum punya akun? Daftar
-                    </a>
-                </div>
-
-                <button type="submit" class="btn btn-primary mt-3 w-100">
-                    Login
-                </button>
-
-            </form>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const togglePassword = document.getElementById('btnTogglePassword');
-        const password = document.getElementById('password');
-
-        togglePassword.addEventListener('click', function() {
-            // toggle the type attribute
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            
-            // toggle the eye icon
-            this.querySelector('i').classList.toggle('fa-eye');
-            this.querySelector('i').classList.toggle('fa-eye-slash');
-        });
-    });
-</script>
-
+    <script src="{{ asset('assets/js/auth/login.js') }}"></script>
 </body>
 </html>

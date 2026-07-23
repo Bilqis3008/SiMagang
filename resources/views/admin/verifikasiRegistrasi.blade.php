@@ -5,27 +5,8 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/admin/kelola-siswa.css') }}">
-    <style>
-        .id-card-preview {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .id-card-preview:hover {
-            transform: scale(1.02);
-        }
-        .badge-pending {
-            background: rgba(245, 158, 11, 0.1);
-            color: #d97706;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/verifikasi-registrasi.css') }}">
+
 @endpush
 
 @section('body')

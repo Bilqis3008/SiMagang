@@ -53,9 +53,20 @@
                         <a class="nav-link {{ request()->routeIs('siswa.pengajuan') ? 'active' : '' }}"
                             href="{{ route('siswa.pengajuan') }}">Lupa Isi</a>
                     </li>
+                    @php
+                        $penilaianCount = 0;
+                        if (auth()->check() && auth()->user() instanceof \App\Models\Siswa) {
+                            $penilaianCount = \App\Models\Penilaian::where('nisn', auth()->user()->nisn)->count();
+                        }
+                    @endphp
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('siswa.laporan') ? 'active' : '' }}"
-                            href="{{ route('siswa.laporan') }}">Laporan</a>
+                            href="{{ route('siswa.laporan') }}">
+                            Laporan
+                            @if($penilaianCount > 0)
+                                <span class="badge bg-danger rounded-pill ms-1" style="font-size: 0.7rem; padding: 0.25em 0.6em; vertical-align: text-top;">{{ $penilaianCount }}</span>
+                            @endif
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('siswa.profil') ? 'active' : '' }}"

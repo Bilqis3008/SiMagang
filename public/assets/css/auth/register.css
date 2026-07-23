@@ -8,7 +8,173 @@ body.register-page {
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
+    background-color: #f8fafc;
 }
+
+/* =============================
+   GRID & UTILITIES (Bootstrap Replacement)
+============================= /* =============================
+   GRID & UTILITIES (Bootstrap Replacement)
+============================= */
+* {
+    box-sizing: border-box;
+}
+
+/* Global box-sizing */
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1100px;
+    /* Diperlebar agar lebih leluasa */
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 0 15px;
+}
+
+.col-md-8 {
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+    padding: 0 15px;
+}
+
+.col-md-10 {
+    flex: 0 0 83.333333%;
+    max-width: 83.333333%;
+    padding: 0 15px;
+}
+
+.col-lg-7 {
+    flex: 0 0 58.333333%;
+    max-width: 58.333333%;
+    padding: 0 15px;
+}
+
+.col-lg-9 {
+    flex: 0 0 75%;
+    max-width: 75%;
+    padding: 0 15px;
+}
+
+.justify-content-center {
+    justify-content: center !important;
+}
+
+.justify-content-between {
+    justify-content: space-between !important;
+}
+
+.align-items-center {
+    align-items: center !important;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.py-5 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+}
+
+.mt-3 {
+    margin-top: 1rem !important;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+.fw-semibold {
+    font-weight: 600 !important;
+}
+
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.text-white {
+    color: #fff !important;
+}
+
+.bg-primary {
+    background-color: #4f46e5 !important;
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+.px-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.px-4 {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+}
+
+.text-primary {
+    color: #4f46e5 !important;
+}
+
+.text-success {
+    color: #10b981 !important;
+}
+
+.text-danger {
+    color: #ef4444 !important;
+}
+
+.text-muted {
+    color: #64748b !important;
+}
+
+/* Alerts */
+.alert {
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+@media (max-width: 768px) {
+
+    .col-md-6,
+    .col-md-8,
+    .col-md-10,
+    .col-lg-7,
+    .col-lg-9 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
 
 /* =============================
    BACKGROUND BLUR EFFECT
@@ -19,7 +185,7 @@ body.register-page::before {
     position: fixed;
     inset: 0;
     background:
-        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+        linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
         url("/images/unsri.jpg") no-repeat center center / cover;
     filter: blur(1px);
     transform: scale(1.08);
@@ -30,7 +196,7 @@ body.register-page::after {
     content: "";
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at top right, rgba(99,102,241,0.25), transparent 50%);
+    background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.25), transparent 50%);
     z-index: -1;
 }
 
@@ -44,7 +210,8 @@ body.register-page::after {
     overflow: hidden;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(14px);
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.95);
+    margin-bottom: 30px;
 }
 
 /* =============================
@@ -52,14 +219,16 @@ body.register-page::after {
 ============================= */
 
 .register-page .card-header {
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
-    padding: 1.5rem;
+    background: #d7f373;
+    padding: 1.5rem 2rem;
+    color: rgb(88, 73, 73);
 }
 
 .register-page .card-header h4 {
     font-weight: 600;
     letter-spacing: 0.5px;
     margin-bottom: 0.25rem;
+    margin-top: 0;
 }
 
 .register-page .card-header small {
@@ -67,12 +236,32 @@ body.register-page::after {
     opacity: 0.9;
 }
 
+/* Brand Header Flex (New) */
+.brand-header-flex {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.brand-header-flex .brand-logo {
+    height: 85px;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+@media (max-width: 768px) {
+    .brand-header-flex {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+}
+
 /* =============================
    CARD BODY
 ============================= */
 
 .register-page .card-body {
-    padding: 2rem;
+    padding: 2.5rem;
 }
 
 /* =============================
@@ -80,10 +269,20 @@ body.register-page::after {
 ============================= */
 
 .register-page .form-label {
+    display: block;
     font-weight: 500;
     font-size: 0.9rem;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
+    color: #334155;
+    text-align: left;
 }
+
+.register-page .form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
 
 /* =============================
    INPUT & SELECT
@@ -91,21 +290,26 @@ body.register-page::after {
 
 .register-page .form-control,
 .register-page .form-select {
+    width: 100%;
     border-radius: 10px;
-    padding: 0.65rem 0.9rem;
+    padding: 0.75rem 1rem;
     font-size: 0.9rem;
     border: 1px solid #e2e8f0;
     transition: all 0.25s ease;
+    outline: none;
+    background-color: #fff;
 }
 
 .register-page .form-control:focus,
 .register-page .form-select:focus {
     border-color: #6366f1;
-    box-shadow: 0 0 0 0.2rem rgba(99,102,241,0.25);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
 }
 
 /* Input group fix for register page */
 .register-page .input-group {
+    display: flex;
+    width: 100%;
     border-radius: 10px;
     overflow: hidden;
     border: 1px solid #e2e8f0;
@@ -113,6 +317,7 @@ body.register-page::after {
 }
 
 .register-page .input-group .form-control {
+    flex: 1;
     border: none !important;
     border-radius: 0 !important;
 }
@@ -121,8 +326,10 @@ body.register-page::after {
     border: none !important;
     background-color: transparent !important;
     color: #64748b;
-    padding-right: 14px;
-    padding-left: 14px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }
 
 .register-page .input-group .btn-outline-secondary:hover {
@@ -131,7 +338,7 @@ body.register-page::after {
 
 .register-page .input-group:focus-within {
     border-color: #6366f1;
-    box-shadow: 0 0 0 0.2rem rgba(99,102,241,0.25);
+    box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
 }
 
 /* =============================
@@ -151,13 +358,42 @@ body.register-page::after {
    BUTTON STYLE
 ============================= */
 
+.register-page .btn {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.register-page .btn-link {
+    font-weight: 400;
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+.register-page .btn-link:hover {
+    color: #4338ca;
+    text-decoration: underline;
+}
+
 .register-page .btn-primary {
+
     border-radius: 12px;
     padding: 0.65rem 1.5rem;
     font-weight: 500;
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    background: #d7f373;
     border: none;
     transition: all 0.3s ease;
+    font-weight: bold;
 }
 
 .register-page .btn-primary:hover {

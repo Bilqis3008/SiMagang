@@ -57,6 +57,18 @@
                             href="{{ route('pembimbing.evaluasi') }}">Penilaian Siswa</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ Route::is('pembimbing.pesan*') ? 'active' : '' }}"
+                            href="{{ route('pembimbing.pesan') }}">
+                            Pesan
+                            @php
+                                $unread = \App\Models\Pesan::where('receiver_id', auth()->user()->id_pembimbing)->where('is_read', false)->count();
+                            @endphp
+                            @if($unread > 0)
+                                <span class="badge bg-danger rounded-pill ms-1">{{ $unread }}</span>
+                            @endif
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ Route::is('pembimbing.profil') ? 'active' : '' }}"
                             href="{{ route('pembimbing.profil') }}">Profil</a>
                     </li>

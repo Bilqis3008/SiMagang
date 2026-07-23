@@ -13,7 +13,12 @@
 @endpush
 
 @section('body')
-    <div class="page-wrapper">
+    <div class="page-wrapper" 
+         data-absensi-detail="{{ route('siswa.absensi.detail') }}"
+         data-logbook-detail="{{ route('siswa.logbook.detail') }}"
+         data-absensi-store="{{ route('siswa.absensi.store') }}"
+         data-csrf-token="{{ csrf_token() }}"
+         data-storage-url="{{ asset('storage') }}">
         <div class="page-header">
             <div>
                 <h2 class="page-title">Absensi & Kegiatan Harian</h2>
@@ -103,8 +108,7 @@
                                             <label class="form-label-custom">
                                                 Status Kehadiran
                                             </label>
-                                            <select name="status_pilihan" class="form-control-custom" required
-                                                onchange="togglePhotoLabel(this.value)">
+                                            <select name="status_pilihan" id="statusPilihan" class="form-control-custom" required>
                                                 <option value="hadir" selected>Hadir (Sesuai Jadwal)</option>
                                                 <option value="izin">Izin</option>
                                                 <option value="sakit">Sakit</option>
@@ -420,23 +424,23 @@
                 <div class="modal-body p-0">
                     <!-- Tab Switcher inside Modal -->
                     <div class="modal-tab-nav">
-                        <button class="modal-tab-btn active" onclick="switchModalTab('absensi')">
+                        <button class="modal-tab-btn btn-modal-tab active" data-tab="absensi">
                             <i class="fas fa-calendar-check me-1"></i> Absensi
                         </button>
-                        <button class="modal-tab-btn" onclick="switchModalTab('kegiatan')">
+                        <button class="modal-tab-btn btn-modal-tab" data-tab="kegiatan">
                             <i class="fas fa-edit me-1"></i> Kegiatan
                         </button>
                     </div>
 
                     <!-- Navigation Bar -->
                     <div class="pagination-nav-bar px-4 py-3">
-                        <button id="btnPrevPage" class="btn-nav-page" onclick="changePage(1)">
+                        <button id="btnPrevPage" class="btn-nav-page">
                             <i class="fas fa-chevron-left me-1"></i> Sebelumnya
                         </button>
                         <div class="page-indicator fw-bold text-primary">
                             Halaman <span id="currentPageNum">1</span>
                         </div>
-                        <button id="btnNextPage" class="btn-nav-page" onclick="changePage(-1)">
+                        <button id="btnNextPage" class="btn-nav-page">
                             Selanjutnya <i class="fas fa-chevron-right ms-1"></i>
                         </button>
                     </div>
@@ -479,49 +483,4 @@
         </div>
     </div>
 
-    <!-- Modal Check In (Refactored) -->
-    <div class="modal fade" id="modalCheckIn" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content modal-content-custom">
-                <div class="modal-header modal-header-custom">
-                    <h5 class="modal-title">Konfirmasi Check-In</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body modal-body-custom">
-                    <form>
-                        <div class="form-group">
-                            <label class="form-label-custom">Kondisi Kesehatan</label>
-                            <select class="form-control-custom">
-                                <option>Sehat</option>
-                                <option>Kurang Fit</option>
-                                <option>Sakit (Izin)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label-custom">Bukti Foto (Selfie di Lokasi)</label>
-                            <input type="file" class="form-control-custom" accept="image/*">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label-custom">Catatan Tambahan (Opsional)</label>
-                            <textarea class="form-control-custom" rows="2"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer modal-footer-custom">
-                    <button type="button" class="btn-pill btn-secondary-custom" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn-pill btn-primary-custom">Lakukan Check-In</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        window.absensiConfig = {
-            absensiDetailRoute: "{{ route('siswa.absensi.detail') }}",
-            logbookDetailRoute: "{{ route('siswa.logbook.detail') }}",
-            absensiStoreRoute: "{{ route('siswa.absensi.store') }}",
-            csrfToken: "{{ csrf_token() }}",
-            storageUrl: "{{ asset('storage') }}"
-        };
-    </script>
 @endsection

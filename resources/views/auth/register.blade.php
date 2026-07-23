@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrasi - Monitoring Siswa Magang</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -20,12 +18,17 @@
 
     <div class="container py-5">
         <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-7">
+            <div class="col-md-10 col-lg-9">
                 <div class="card shadow-sm">
 
-                    <div class="card-header bg-primary text-white">
-                        <h4 class="mb-0">Registrasi Akun</h4>
-                        <small>Monitoring Siswa Magang</small>
+                    <div class="card-header ">
+                        <div class="brand-header-flex">
+                            <img src="{{ asset('images/unsri-pride.png') }}" alt="Logo UNSRI" class="brand-logo">
+                            <div class="brand-text">
+                                <h4 class="mb-0">Registrasi Akun</h4>
+                                <small>Monitoring Siswa Magang</small>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="card-body">
@@ -43,24 +46,24 @@
                             @csrf
 
                             <!-- Data Umum -->
-                            <div class="mb-3">
+                            <div class="form-group">
                                 <label class="form-label">Nama Lengkap</label>
                                 <input type="text" name="nama" class="form-control" required>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="form-group">
                                 <label class="form-label">Email</label>
                                 <input type="email" name="email" class="form-control" required>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="form-group">
                                 <label class="form-label">No. HP</label>
                                 <input type="text" name="no_hp" class="form-control" placeholder="Contoh: 081234567890"
                                     required>
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-6 form-group">
                                     <label class="form-label">Password</label>
                                     <div class="input-group">
                                         <input type="password" name="password" id="password" class="form-control" required>
@@ -69,7 +72,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-6 form-group">
                                     <label class="form-label">Konfirmasi Password</label>
                                     <div class="input-group">
                                         <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
@@ -80,7 +83,7 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="form-group">
                                 <label class="form-label">Daftar Sebagai</label>
                                 <select name="role" id="role" class="form-select" required>
                                     <option value="">-- Pilih Peran --</option>
@@ -89,7 +92,7 @@
                                 </select>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="form-group">
                                 <label class="form-label">Tahun Ajaran</label>
                                 <select name="id_tahun_ajaran" class="form-select" required>
                                     <option value="">-- Pilih Tahun Ajaran --</option>
@@ -101,14 +104,14 @@
 
                             <!-- Form khusus Siswa -->
                             <div id="form-siswa" class="role-form d-none">
-                                <h6 class="fw-semibold mb-3">Data Siswa Magang</h6>
+                                <h6 class="fw-semibold form-group">Data Siswa Magang</h6>
 
                                 <div class="row">
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 form-group">
                                          <label class="form-label">NISN</label>
                                          <input type="text" name="nisn" class="form-control" required>
                                      </div>
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 form-group">
                                          <label class="form-label">Jenis Kelamin</label>
                                          <select name="jenis_kelamin" class="form-select" required>
                                              <option value="">-- Pilih --</option>
@@ -119,23 +122,23 @@
                                 </div>
 
                                  <div class="row">
-                                     <div class="col-md-6 mb-3">
+                                     <div class="col-md-6 form-group">
                                          <label class="form-label">Kelas</label>
                                          <input type="text" name="kelas" class="form-control" required>
                                      </div>
-                                     <div class="col-md-6 mb-3">
+                                     <div class="col-md-6 form-group">
                                          <label class="form-label">Jurusan</label>
                                          <input type="text" name="jurusan" class="form-control" required>
                                      </div>
                                  </div>
 
-                                 <div class="row mb-3">
-                                     <div class="col-md-6 mb-3">
+                                 <div class="row form-group">
+                                     <div class="col-md-6 form-group">
                                          <label class="form-label">NPSN Sekolah</label>
                                          <input type="text" name="npsn_siswa" id="npsn_siswa" class="form-control"
                                              placeholder="Ketik NPSN Sekolah..." required>
                                             </div>
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-6 form-group">
                                                 <label class="form-label">Asal Sekolah</label>
                                                 <input type="text" name="sekolah_siswa" id="sekolah_siswa" class="form-control" 
                                                 placeholder="Terisi otomatis jika NPSN ditemukan" readonly required>
@@ -143,7 +146,7 @@
                                             <small id="npsn_siswa_msg" class="text-muted"></small>
                                  </div>
 
-                                 <div class="mb-3">
+                                 <div class="form-group">
                                      <label class="form-label">Lokasi Magang</label>
                                      <select name="perusahaan" class="form-select" required>
                                          <option value="">-- Pilih Lokasi Magang --</option>
@@ -154,24 +157,24 @@
                                  </div>
 
                                 <div class="row">
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 form-group">
                                         <label class="form-label">Tanggal Mulai Magang</label>
                                         <input type="date" name="tgl_mulai_magang" class="form-control" required>
                                     </div>
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 form-group">
                                         <label class="form-label">Tanggal Selesai Magang</label>
                                         <input type="date" name="tgl_selesai_magang" class="form-control" required>
                                     </div>
                                 </div>
 
                                  <div class="row">
-                                      <div class="col-md-6 mb-3">
+                                      <div class="col-md-6 form-group">
                                           <label class="form-label">Upload Surat Balasan <span
                                                   class="text-muted">(PDF/JPG/PNG)</span></label>
                                           <input type="file" name="surat_balasan" class="form-control"
                                               accept=".pdf,.jpg,.jpeg,.png" required>
                                       </div>
-                                      <div class="col-md-6 mb-3">
+                                      <div class="col-md-6 form-group">
                                           <label class="form-label">Upload Tanda Pengenal Siswa <span
                                                   class="text-muted">(JPG/PNG)</span></label>
                                           <input type="file" name="tanda_pengenal" class="form-control"
@@ -180,14 +183,14 @@
                                  </div>
 
                                 <div class="row">
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 form-group">
                                         <label class="form-label">Tipe Magang</label>
                                         <select name="tipe_magang" id="tipe_magang" class="form-select">
                                             <option value="individu">Individu</option>
                                             <option value="kelompok">Kelompok</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-6 mb-3 d-none" id="group-leader-section">
+                                    <div class="col-md-6 form-group d-none" id="group-leader-section">
                                         <label class="form-label">NISN Ketua Kelompok</label>
                                         <input type="text" name="nisn_ketua" class="form-control" placeholder="Masukkan NISN Ketua">
                                         <small class="text-muted">Jika Anda ketua, isi dengan NISN Anda sendiri.</small>
@@ -197,26 +200,26 @@
 
                             <!-- Form khusus Guru -->
                             <div id="form-guru" class="role-form d-none">
-                                <h6 class="fw-semibold mb-3">Data Guru Pembimbing</h6>
+                                <h6 class="fw-semibold form-group">Data Guru Pembimbing</h6>
 
                                  <div class="row">
-                                     <div class="col-md-6 mb-3">
+                                     <div class="col-md-6 form-group">
                                          <label class="form-label">NIP</label>
                                          <input type="text" name="id_guru" class="form-control" required>
                                      </div>
-                                     <div class="col-md-6 mb-3">
+                                     <div class="col-md-6 form-group">
                                          <label class="form-label">Jabatan</label>
                                          <input type="text" name="jabatan" class="form-control" required>
                                      </div>
                                  </div>
 
                                  <div class="row">
-                                     <div class="col-md-6 mb-3">
+                                     <div class="col-md-6 form-group">
                                          <label class="form-label">NPSN Sekolah</label>
                                          <input type="text" name="npsn_guru" id="npsn_guru" class="form-control" 
                                              placeholder="Ketik NPSN..." required>
                                     </div>
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 form-group">
                                         <label class="form-label">Asal Sekolah</label>
                                         <input type="text" name="sekolah_guru" id="sekolah_guru" class="form-control" 
                                         placeholder="Terisi otomatis" readonly required>
@@ -224,7 +227,7 @@
                                     <small id="npsn_guru_msg" class="text-muted"></small>
                                  </div>
 
-                                 <div class="mb-3">
+                                 <div class="form-group">
                                      <label class="form-label">Upload Tanda Pengenal Guru <span
                                              class="text-muted">(JPG/PNG)</span></label>
                                      <input type="file" name="tanda_pengenal" class="form-control"
@@ -234,14 +237,14 @@
 
                             <!-- Form khusus Dosen -->
                             <div id="form-dosen" class="role-form d-none">
-                                <h6 class="fw-semibold mb-3">Data Dosen Pembimbing</h6>
+                                <h6 class="fw-semibold form-group">Data Dosen Pembimbing</h6>
 
                                 <div class="row">
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 form-group">
                                         <label class="form-label">Jabatan</label>
                                         <input type="text" name="jabatan" class="form-control">
                                     </div>
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6 form-group">
                                         <label class="form-label">Instansi</label>
                                         <select name="instansi" class="form-select">
                                             <option value="">-- Pilih Instansi --</option>
@@ -251,7 +254,7 @@
                                     </div>
                                 </div>
 
-                                <div class="mb-3">
+                                <div class="form-group">
                                     <label class="form-label">No. Telpon</label>
                                     <input type="text" name="no_telp" class="form-control">
                                 </div>
@@ -259,9 +262,9 @@
 
                             <!-- Form khusus Admin -->
                             <div id="form-admin" class="role-form d-none">
-                                <h6 class="fw-semibold mb-3">Data Admin</h6>
+                                <h6 class="fw-semibold form-group">Data Admin</h6>
 
-                                <div class="mb-3">
+                                <div class="form-group">
                                     <label class="form-label">Instansi</label>
                                     <input type="text" name="instansi" class="form-control">
                                 </div>
@@ -281,72 +284,8 @@
         </div>
     </div>
 
-    <script src="{{ asset('assets/js/register.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleButtons = document.querySelectorAll('.toggle-password');
-            
-            toggleButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const targetId = this.getAttribute('data-target');
-                    const input = document.getElementById(targetId);
-                    
-                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-                    input.setAttribute('type', type);
-                    
-                    this.querySelector('i').classList.toggle('fa-eye');
-                    this.querySelector('i').classList.toggle('fa-eye-slash');
-                });
-            });
+    <script src="{{ asset('assets/js/auth/register.js') }}"></script>
 
-            // NPSN Lookup Logic
-            function initNpsnLookup(inputId, outputId, msgId) {
-                const npsnInput = document.getElementById(inputId);
-                const schoolInput = document.getElementById(outputId);
-                const msgEl = document.getElementById(msgId);
-                const btnDaftar = document.getElementById('btn-daftar');
-
-                if (!npsnInput) return;
-
-                npsnInput.addEventListener('input', function() {
-                    const npsn = this.value;
-                    if (npsn.length >= 8) {
-                        msgEl.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Mencari sekolah...';
-                        msgEl.className = 'text-primary';
-                        
-                        fetch(`/api/schools/${npsn}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    schoolInput.value = data.data.nama_sekolah;
-                                    msgEl.innerHTML = '<i class="fas fa-check-circle me-2"></i> Sekolah ditemukan: ' + data.data.nama_sekolah;
-                                    msgEl.className = 'text-success';
-                                    btnDaftar.disabled = false;
-                                } else {
-                                    schoolInput.value = '';
-                                    msgEl.innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i> Sekolah belum terdaftar. Hubungi Admin.';
-                                    msgEl.className = 'text-danger';
-                                    btnDaftar.disabled = true;
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error fetching school:', error);
-                                msgEl.innerHTML = 'Terjadi kesalahan sistem.';
-                                msgEl.className = 'text-danger';
-                            });
-                    } else {
-                        schoolInput.value = '';
-                        msgEl.innerHTML = 'NPSN minimal 8 digit.';
-                        msgEl.className = 'text-muted';
-                        btnDaftar.disabled = false; // Reset to let other roles register if needed
-                    }
-                });
-            }
-
-            initNpsnLookup('npsn_siswa', 'sekolah_siswa', 'npsn_siswa_msg');
-            initNpsnLookup('npsn_guru', 'sekolah_guru', 'npsn_guru_msg');
-        });
-    </script>
 </body>
 
 </html>

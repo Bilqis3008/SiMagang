@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
     {
         // Buat akun admin default
         Admin::create([
-            'name'     => 'Administrator',
+            'nama'     => 'Administrator',
             'email'    => 'zuhrimubarak@gmail.com',
             'password' => 'zuhri123', // akan otomatis di-hash oleh casts di model
-            'instansi' => 'Admin',
+            'role'     => 'Admin',
         ]);
     }
 }

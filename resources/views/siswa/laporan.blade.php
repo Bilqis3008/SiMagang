@@ -49,6 +49,9 @@
                     role="tab" aria-selected="false">
                     <i class="fas fa-star"></i>
                     <span>Hasil Penilaian</span>
+                    @if($penilaians->count() > 0)
+                        <span class="badge bg-danger rounded-pill ms-1" style="font-size: 0.7rem; padding: 0.25em 0.6em;">{{ $penilaians->count() }}</span>
+                    @endif
                 </button>
             </div>
         </div>

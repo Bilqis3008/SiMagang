@@ -52,6 +52,17 @@
                         <a class="nav-link {{ Route::is('guru.penilaian*') ? 'active' : '' }}" href="{{ route('guru.penilaian') }}">Penilaian</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ Route::is('guru.pesan*') ? 'active' : '' }}" href="{{ route('guru.pesan') }}">
+                            Pesan
+                            @php
+                                $unread = \App\Models\Pesan::where('receiver_id', auth()->user()->id_guru)->where('is_read', false)->count();
+                            @endphp
+                            @if($unread > 0)
+                                <span class="badge bg-danger rounded-pill ms-1">{{ $unread }}</span>
+                            @endif
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ Route::is('guru.profil*') ? 'active' : '' }}" href="{{ route('guru.profil') }}">Profil</a>
                     </li>
                 </ul>

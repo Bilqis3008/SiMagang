@@ -1,54 +1,12 @@
 // 0. Security & Secure Context Check (Required for Geolocation)
 function checkSecureContext() {
-    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const isHttps = window.location.protocol === 'https:';
-
-    if (!isHttps && !isLocalhost) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Koneksi Tidak Aman!',
-            html: `
-                <div class="text-start">
-                    <p>Sistem mendeteksi Anda menggunakan koneksi <b>HTTP</b> yang tidak aman.</p>
-                    <p><b>Fitur Absensi (GPS) Wajib menggunakan HTTPS</b> agar browser dapat memberikan izin akses lokasi.</p>
-                    <hr>
-                    <p class="mb-1"><b>Solusi:</b></p>
-                    <ol class="small">
-                        <li>Gunakan alamat <b>https://</b> di depan URL.</li>
-                        <li>Hubungi Admin jika SSL belum terpasang.</li>
-                        <li>Pastikan pengaturan SSL di server/Laragon sudah aktif.</li>
-                    </ol>
-                </div>
-            `,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            footer: '<span class="text-danger">Akses fitur ini diblokir demi keamanan data lokasi Anda.</span>'
-        });
-        return false;
-    }
-    return true;
+    // Dimatikan sementara untuk pengembangan di jaringan lokal (HTTP)
+    return true; 
 }
 
 // 1. Proactive Permission Check
 async function checkLocationPermission() {
-    if (!navigator.permissions || !navigator.permissions.query) return;
-
-    try {
-        const result = await navigator.permissions.query({ name: 'geolocation' });
-        if (result.state === 'denied') {
-            showLocationBlockedAlert();
-        }
-        
-        result.onchange = () => {
-            if (result.state === 'denied') {
-                showLocationBlockedAlert();
-            } else if (result.state === 'granted') {
-                Swal.close();
-            }
-        };
-    } catch (e) {
-        console.warn('Permissions API not fully supported');
-    }
+    return; // Dimatikan agar tidak mengganggu tampilan saat pertama buka
 }
 
 function showLocationBlockedAlert() {
@@ -129,8 +87,17 @@ function switchModalTab(tab) {
 }
 
 async function fetchHistoryData() {
-    const config = window.absensiConfig || {};
+    const pageWrapper = document.querySelector('.page-wrapper');
+    const config = {
+        absensiDetailRoute: pageWrapper?.dataset.absensiDetail,
+        logbookDetailRoute: pageWrapper?.dataset.logbookDetail,
+        absensiStoreRoute: pageWrapper?.dataset.absensiStore,
+        csrfToken: pageWrapper?.dataset.csrfToken,
+        storageUrl: pageWrapper?.dataset.storageUrl
+    };
+
     const page = currentModalTab === 'absensi' ? currentAbsenPage : currentKegiatanPage;
+
     const route = currentModalTab === 'absensi' ? config.absensiDetailRoute : config.logbookDetailRoute;
     const tbodyId = currentModalTab === 'absensi' ? 'historyAbsensiBody' : 'historyKegiatanBody';
     const tbody = document.getElementById(tbodyId);
@@ -244,154 +211,111 @@ function updatePaginationUI(page, hasMore) {
     btnNext.style.opacity = (page === 1) ? '0.5' : '1';
 }
 
-function getStatusBadgeClass(status) {
-    status = status.toLowerCase();
-    if (status.includes('hadir')) return 'badge-ui badge-success';
-    if (status.includes('izin')) return 'badge-ui badge-info';
-    if (status.includes('sakit')) return 'badge-ui badge-warning';
-    return 'badge-ui badge-danger';
-}
-
-function getLogStatusClass(status) {
-    if (status === 'verified') return 'badge-ui badge-success';
-    if (status === 'rejected') return 'badge-ui badge-danger';
-    return 'badge-ui badge-warning';
-}
-
 // Geolocation Processing
 async function prosesAbsensi(type) {
-    if (!checkSecureContext()) return;
+    const pageWrapper = document.querySelector('.page-wrapper');
+    const config = {
+        absensiDetailRoute: pageWrapper?.dataset.absensiDetail,
+        logbookDetailRoute: pageWrapper?.dataset.logbookDetail,
+        absensiStoreRoute: pageWrapper?.dataset.absensiStore,
+        csrfToken: pageWrapper?.dataset.csrfToken,
+        storageUrl: pageWrapper?.dataset.storageUrl
+    };
 
-    const config = window.absensiConfig || {};
     const form = type === 'masuk' ? document.getElementById('formAbsensiMasuk') : document.getElementById('formAbsensiPulang');
     if (!form) return;
 
     if (!navigator.geolocation) {
-        Swal.fire('Error', 'Browser Anda tidak mendukung fitur lokasi.', 'error');
+        Swal.fire('Info', 'Browser ini tidak mendukung GPS, mencoba absen tanpa lokasi...', 'info');
+        submitAbsenData(form, type, config, null, null);
         return;
     }
 
-    try {
-        const permission = await navigator.permissions.query({ name: 'geolocation' });
-        if (permission.state === 'denied') {
-            showLocationBlockedAlert();
-            return;
-        }
-    } catch (e) { }
-
     Swal.fire({
         title: 'Meminta Akses Lokasi',
-        html: 'Sistem sedang mempersiapkan lokasi absensi Anda.<br><br><b>PENTING:</b> Harap selalu pilih <b>"Allow" / "Izinkan"</b> jika muncul pop-up peringatan dari Browser di bagian atas layar.',
+        html: 'Sistem sedang menyiapkan GPS...<br><br>Jika muncul pop-up izin browser, harap pilih <b>"Allow" / "Izinkan"</b>.',
         icon: 'info',
         allowOutsideClick: false,
         showConfirmButton: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
+        didOpen: () => { Swal.showLoading(); }
     });
 
     navigator.geolocation.getCurrentPosition(async (position) => {
-        Swal.fire({
-            title: 'Lokasi Ditemukan!',
-            text: 'Sedang mengirim data absensi ke server...',
-            allowOutsideClick: false,
-            didOpen: () => Swal.showLoading()
-        });
-
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
-
-        const formData = new FormData(form);
-        formData.append('latitude', userLat);
-        formData.append('longitude', userLng);
-
-        try {
-            const response = await fetch(config.absensiStoreRoute, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': config.csrfToken,
-                    'Accept': 'application/json'
-                }
-            });
-
-            const result = await response.json();
-
-            if (response.ok && result.success !== false) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: result.message || 'Absen berhasil dicatat!',
-                }).then(() => {
-                    window.location.reload();
-                });
-            } else {
-                let errorMsg = result.message || 'Gagal menyimpan data absensi.';
-                if (result.errors) {
-                    errorMsg = Object.values(result.errors).flat().join('\n');
-                }
-                
-                Swal.close();
-                setTimeout(() => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal',
-                        text: errorMsg,
-                        showConfirmButton: true,
-                        confirmButtonText: 'Tutup'
-                    });
-                }, 100);
-            }
-        } catch (error) {
-            console.error('Fetch error:', error);
-            Swal.close();
-            setTimeout(() => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Terjadi kesalahan sistem saat menghubungi server.',
-                    showConfirmButton: true,
-                    confirmButtonText: 'Tutup'
-                });
-            }, 100);
-        }
-
+        submitAbsenData(form, type, config, position.coords.latitude, position.coords.longitude);
     }, (error) => {
-        console.error('Geolocation Error:', error);
-        let msg = 'Gagal mengambil lokasi karena galat tidak dikenal.';
-        
-        if (error.code === error.PERMISSION_DENIED) {
-            msg = 'Akses ditolak! Mohon izinkan akses lokasi di pengaturan browser Anda.';
-            showLocationBlockedAlert();
-            return;
-        } else if (error.code === error.POSITION_UNAVAILABLE) {
-            msg = 'Informasi sinyal GPS / Lokasi tidak tersedia saat ini di perangkat Anda.';
-        } else if (error.code === error.TIMEOUT) {
-            msg = 'Waktu pencarian lokasi habis (Timeout). Pastikan koneksi dan GPS berjalan lancar, lalu pencet tombol absen kembali.';
-        }
-        
-        Swal.close();
-        setTimeout(() => {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Akses Lokasi Gagal',
-                text: msg,
-                confirmButtonText: 'Tutup'
-            });
-        }, 100);
+        console.warn('Geolocation Error:', error);
+        let msg = 'Gagal mengambil lokasi GPS (kemungkinan karena koneksi HTTP tidak aman).';
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Lanjutkan Tanpa GPS?',
+            text: msg + ' Ingin tetap absen tanpa data koordinat lokasi?',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Lanjutkan',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                submitAbsenData(form, type, config, null, null);
+            }
+        });
     }, {
         enableHighAccuracy: true,
-        timeout: 30000,
+        timeout: 8000,
         maximumAge: 0
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Initial checks
-    if (checkSecureContext()) {
-        checkLocationPermission();
+async function submitAbsenData(form, type, config, lat, lng) {
+    Swal.fire({
+        title: 'Mengirim Data...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+
+    const formData = new FormData(form);
+    if (lat && lng) {
+        formData.append('latitude', lat);
+        formData.append('longitude', lng);
+    } else {
+        formData.append('latitude', '0');
+        formData.append('longitude', '0');
     }
 
+    try {
+        const response = await fetch(config.absensiStoreRoute, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': config.csrfToken,
+                'Accept': 'application/json'
+            }
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success !== false) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: result.message || 'Absen berhasil dicatat!',
+            }).then(() => {
+                window.location.reload();
+            });
+        } else {
+            let errorMsg = result.message || 'Gagal menyimpan data absensi.';
+            if (result.errors) {
+                errorMsg = Object.values(result.errors).flat().join('\n');
+            }
+            Swal.fire({ icon: 'error', title: 'Gagal', text: errorMsg });
+        }
+    } catch (error) {
+        console.error('Fetch error:', error);
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Terjadi kesalahan sistem.' });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
     const btnMasuk = document.querySelector('#formAbsensiMasuk .btn-checkin');
     const btnPulang = document.querySelector('#formAbsensiPulang .btn-checkout');
 
@@ -419,5 +343,18 @@ document.addEventListener('DOMContentLoaded', () => {
             fetchHistoryData();
         });
     }
-});
 
+    const statusPilihan = document.getElementById('statusPilihan');
+    if (statusPilihan) {
+        statusPilihan.addEventListener('change', function() { togglePhotoLabel(this.value); });
+    }
+
+    document.querySelectorAll('.btn-modal-tab').forEach(btn => {
+        btn.addEventListener('click', function() { switchModalTab(this.getAttribute('data-tab')); });
+    });
+
+    const btnPrevPage = document.getElementById('btnPrevPage');
+    const btnNextPage = document.getElementById('btnNextPage');
+    if (btnPrevPage) btnPrevPage.addEventListener('click', () => changePage(1));
+    if (btnNextPage) btnNextPage.addEventListener('click', () => changePage(-1));
+});

@@ -127,9 +127,9 @@ class SiswaKegiatanController extends SiswaBaseController
         // Validasi input dasar
         $request->validate([
             'type' => 'required|in:masuk,pulang',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'latitude' => 'nullable',
+            'longitude' => 'nullable',
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:8192',
         ]);
 
         $lat = $request->latitude;
@@ -193,8 +193,8 @@ class SiswaKegiatanController extends SiswaBaseController
 
             $pilihan = $request->status_pilihan ?? 'hadir';
 
-            // Pengecekan Radius hanya untuk status 'hadir'
-            if ($pilihan === 'hadir' && !$isValidLocation) {
+            // Pengecekan Radius hanya jika koordinat tersedia dan status 'hadir'
+            if ($pilihan === 'hadir' && ($lat != 0 && $lat != null) && !$isValidLocation) {
                 return response()->json([
                     'success' => false, 
                     'message' => "Anda berada di luar radius {$namaLokasi} (" . round($jarak) . "m). Silakan mendekat ke lokasi.",
@@ -239,8 +239,8 @@ class SiswaKegiatanController extends SiswaBaseController
                 return response()->json(['success' => false, 'message' => 'Maaf, absen pulang belum diperbolehkan.'], 400);
             }
 
-            // Pengecekan Radius untuk Pulang
-            if (!$isValidLocation) {
+            // Pengecekan Radius untuk Pulang jika koordinat tersedia
+            if (($lat != 0 && $lat != null) && !$isValidLocation) {
                 return response()->json([
                     'success' => false, 
                     'message' => "Anda berada di luar radius {$namaLokasi} (" . round($jarak) . "m). Silakan mendekat ke lokasi.",

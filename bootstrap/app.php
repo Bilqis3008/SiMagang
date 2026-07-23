@@ -12,8 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
-            \App\Http\Middleware\EnforceHttps::class,
+            // \App\Http\Middleware\EnforceHttps::class,
         ]);
+        $middleware->trustProxies(at: '*');
     })
 
     ->withExceptions(function (Exceptions $exceptions): void {
