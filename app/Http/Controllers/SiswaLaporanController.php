@@ -34,8 +34,9 @@ class SiswaLaporanController extends SiswaBaseController
             'alpa' => $absensiData->where('status', 'alpa')->count(),
         ];
 
-        // Penilaian (Both from Supervisor and Teacher)
+        // Penilaian (Hanya dari Pembimbing Lapangan)
         $penilaians = $user->penilaians()
+            ->where('pemberi_nilai', '!=', 'Guru Pembimbing')
             ->with('penilaianDetails.kriteria')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -247,20 +248,16 @@ class SiswaLaporanController extends SiswaBaseController
             ->with(['penilaianDetails.kriteria'])
             ->firstOrFail();
 
-        $siswa = $user->load(['pembimbing', 'tahunAjaran', 'guru']);
+        $siswa = $user->load(['pembimbing', 'tahunAjaran']);
         $pembimbing = $siswa->pembimbing;
 
         $fileName = "Penilaian_{$siswa->nisn}_" . date('d_M_Y') . ".pdf";
 
-        // Determine which template to use based on pemberi_nilai
-        $viewTemplate = ($penilaian->pemberi_nilai == 'Guru Pembimbing') ? 'guru.printPenilaian' : 'pembimbing.cetakPenilaian';
-
-        $pdf = Pdf::loadView($viewTemplate, [
+        $pdf = Pdf::loadView('pembimbing.cetakPenilaian', [
             'siswa' => $siswa,
             'pembimbing' => $pembimbing,
             'penilaian' => $penilaian,
-            'user' => $siswa->guru, // Pass guru if needed for guru template
-            'konfigurasi' => KonfigurasiLaporan::where('tipe_laporan', $penilaian->pemberi_nilai == 'Guru Pembimbing' ? 'penilaian_guru' : 'penilaian_pembimbing')->first()
+            'konfigurasi' => KonfigurasiLaporan::where('tipe_laporan', 'penilaian_pembimbing')->first()
         ]);
         
         if ($request->has('download')) {
@@ -277,12 +274,11 @@ class SiswaLaporanController extends SiswaBaseController
         /** @var \App\Models\Siswa $user */
         $user = Auth::user();
         
-        // Sertifikat hanya tersedia jika status 'selesai' DAN sudah ada penilaian dari Guru & Pembimbing
-        $hasGuruPenilaian = $user->penilaians()->where('pemberi_nilai', 'Guru Pembimbing')->exists();
+        // Sertifikat hanya tersedia jika status 'selesai' DAN sudah ada penilaian dari Pembimbing
         $hasPembimbingPenilaian = $user->penilaians()->where('pemberi_nilai', 'Dosen Pembimbing')->exists();
 
-        if ($user->status !== 'selesai' || !$hasGuruPenilaian || !$hasPembimbingPenilaian) {
-            return back()->with('info', 'Sertifikat akan tersedia setelah Anda menyelesaikan magang dan mendapatkan penilaian lengkap dari Guru Pembimbing dan Pembimbing Lapangan.');
+        if ($user->status !== 'selesai' || !$hasPembimbingPenilaian) {
+            return back()->with('info', 'Sertifikat akan tersedia setelah Anda menyelesaikan magang dan mendapatkan penilaian lengkap dari Pembimbing Lapangan.');
         }
 
         $user->load(['pembimbing', 'tahunAjaran']);

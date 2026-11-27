@@ -17,7 +17,7 @@ class AdminRekapController extends Controller
     {
         $user = Auth::user();
         $role = $user instanceof HasRole ? $user->getRole() : null;
-        abort_unless($user && in_array($role, ['admin', 'pimpinan']), 403);
+        abort_unless($user && $role === 'admin', 403);
         return $user;
     }
 
@@ -37,10 +37,10 @@ class AdminRekapController extends Controller
                 ->orWhere('tgl_selesai_magang', '<', now())
                 ->count(),
             'total_siswa' => Siswa::count(),
-            'total_guru' => Guru::count(),
+            
         ];
 
-        $tahunAjarans = \App\Models\TahunAjaran::orderBy('tahun_ajaran', 'desc')->get();
+        $tahunAjarans = \App\Models\TahunAjaran::getOtomatis();
 
         return view('admin.rekap', compact('user', 'stats', 'tahunAjarans'));
     }
@@ -77,7 +77,7 @@ class AdminRekapController extends Controller
             'siswa_aktif'   => $queryAktif->count(),
             'siswa_selesai' => $querySelesai->count(),
             'total_siswa'   => $queryTotal->count(),
-            'total_guru'    => $queryGuru->count(),
+            
         ]);
     }
 
@@ -139,33 +139,6 @@ class AdminRekapController extends Controller
         $ta = $periode ? \App\Models\TahunAjaran::find($periode) : null;
 
         return $this->generateSiswaPdf($data, 'Daftar Total Siswa Magang', $request->has('download'), $ta);
-    }
-
-    public function rekapGuru(Request $request)
-    {
-        $this->authorizeAccess();
-        $periode = $request->input('periode');
-
-        $query = Guru::query();
-        if ($periode) {
-            $query->where('id_tahun_ajaran', $periode);
-        }
-
-        $data = $query->orderBy('nama')->get();
-        $ta = $periode ? \App\Models\TahunAjaran::find($periode) : null;
-
-        $pdf = Pdf::loadView('admin.pdf.rekapGuru', [
-            'items' => $data,
-            'title' => 'Laporan Rekap Guru Pembimbing',
-            'date' => Carbon::now()->translatedFormat('d F Y'),
-            'tahun_ajaran' => $ta ? $ta->tahun_ajaran : null
-        ]);
-
-        $fileName = "Rekap_Guru_" . date('d_M_Y') . ".pdf";
-        if ($request->has('download')) {
-            return $pdf->download($fileName);
-        }
-        return $pdf->stream($fileName);
     }
 
     private function generateSiswaPdf($data, $title, $shouldDownload, $ta = null)

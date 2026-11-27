@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('title', 'Daftar Siswa Bimbingan - SIM Magang'); ?>
 <?php $__env->startSection('body-class', 'pembimbing-page'); ?>
 
@@ -47,11 +49,12 @@
                         <table class="custom-table">
                             <thead>
                                 <tr>
-                                    <th width="5%" class="text-center">No</th>
-                                    <th width="35%">Info Siswa</th>
-                                    <th width="20%">Sekolah / Perusahaan</th>
-                                    <th width="15%" class="text-center">Status Hari Ini</th>
-                                    <th width="25%" class="text-center">Aksi</th>
+                                    <th width="4%" class="text-center">No</th>
+                                    <th width="24%">Info Siswa</th>
+                                    <th width="18%">Sekolah / Perusahaan</th>
+                                    <th width="28%">Modul Pembelajaran</th>
+                                    <th width="10%" class="text-center">Presensi</th>
+                                    <th width="16%" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="activeTableBody">
@@ -82,6 +85,53 @@
                                                 <span class="badge-role bg-purple-light text-purple"><i class="fas fa-school me-1"></i> <?php echo e($siswa->sekolah); ?></span>
                                                 <span class="small text-muted"><i class="fas fa-building me-1"></i> <?php echo e($siswa->perusahaan); ?></span>
                                             </div>
+                                        </td>
+                                        <td>
+                                            <?php if($siswa->modulSiswas && $siswa->modulSiswas->count() > 0): ?>
+                                                <div class="d-flex flex-column gap-2">
+                                                    <?php $__currentLoopData = $siswa->modulSiswas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ms): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <div class="p-2 px-3 rounded-3 border bg-light d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                <div class="fw-bold text-dark small"><?php echo e($ms->modul->judul ?? 'Modul'); ?></div>
+                                                                <div class="text-muted" style="font-size: 0.72rem;">
+                                                                    <i class="fas fa-calendar-alt text-primary me-1"></i>
+                                                                    <?php echo e($ms->tgl_mulai ? \Carbon\Carbon::parse($ms->tgl_mulai)->format('d/m/Y') : '-'); ?> s/d <?php echo e($ms->tgl_selesai ? \Carbon\Carbon::parse($ms->tgl_selesai)->format('d/m/Y') : '-'); ?>
+
+                                                                </div>
+                                                                <div class="mt-1">
+                                                                    <?php if($ms->kuis_selesai): ?>
+                                                                        <span class="badge bg-success" style="font-size: 0.65rem;"><i class="fas fa-check-circle me-1"></i> Selesai (Nilai: <?php echo e(number_format($ms->nilai_kuis, 0)); ?>)</span>
+                                                                    <?php elseif($ms->video_selesai): ?>
+                                                                        <span class="badge bg-warning text-dark" style="font-size: 0.65rem;"><i class="fas fa-pen-alt me-1"></i> Kuis</span>
+                                                                    <?php elseif($ms->pdf_selesai): ?>
+                                                                        <span class="badge bg-info text-dark" style="font-size: 0.65rem;"><i class="fas fa-play me-1"></i> Video</span>
+                                                                    <?php else: ?>
+                                                                        <span class="badge bg-secondary" style="font-size: 0.65rem;"><i class="fas fa-book-open me-1"></i> Baca PDF</span>
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex align-items-center gap-1">
+                                                                <button type="button" class="btn btn-xs btn-outline-warning rounded-pill px-2 py-1 btn-edit-modul-siswa"
+                                                                    data-bs-toggle="modal" data-bs-target="#modalEditModulSiswa"
+                                                                    data-id="<?php echo e($ms->id_modul_siswa); ?>"
+                                                                    data-judul="<?php echo e($ms->modul->judul ?? 'Modul'); ?>"
+                                                                    data-siswa="<?php echo e($siswa->nama); ?>"
+                                                                    data-mulai="<?php echo e($ms->tgl_mulai ? \Carbon\Carbon::parse($ms->tgl_mulai)->format('Y-m-d') : ''); ?>"
+                                                                    data-selesai="<?php echo e($ms->tgl_selesai ? \Carbon\Carbon::parse($ms->tgl_selesai)->format('Y-m-d') : ''); ?>"
+                                                                    data-selesai-kuis="<?php echo e($ms->kuis_selesai ? '1' : '0'); ?>"
+                                                                    data-nilai="<?php echo e($ms->nilai_kuis ?? '-'); ?>"
+                                                                    data-update-action="<?php echo e(route('pembimbing.modulSiswa.update', $ms->id_modul_siswa)); ?>"
+                                                                    data-delete-action="<?php echo e(route('pembimbing.modulSiswa.delete', $ms->id_modul_siswa)); ?>"
+                                                                    title="Edit / Revisi Penugasan Modul">
+                                                                    <i class="fas fa-pencil-alt"></i> Revisi
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                </div>
+                                            <?php else: ?>
+                                                <span class="badge bg-light text-muted border">Belum ada modul</span>
+                                            <?php endif; ?>
                                         </td>
                                         <td class="text-center">
                                             <?php if($siswa->absen_hari_ini): ?>
@@ -129,12 +179,22 @@
                                                     title="Absensi">
                                                     <i class="fas fa-calendar-check"></i>
                                                 </a>
+                                                <button class="btn-small btn-preview-pdf btn-assign-modul"
+                                                    data-bs-toggle="modal" data-bs-target="#modalAssignModul"
+                                                    data-nisn="<?php echo e($siswa->nisn); ?>"
+                                                    data-nama="<?php echo e($siswa->nama); ?>"
+                                                    data-assigned="<?php echo e($siswa->modulSiswas ? $siswa->modulSiswas->pluck('id_modul')->toJson() : '[]'); ?>"
+                                                    data-modul-dates="<?php echo e($siswa->modulSiswas ? $siswa->modulSiswas->mapWithKeys(fn($ms) => [$ms->id_modul => ['tgl_mulai' => $ms->tgl_mulai, 'tgl_selesai' => $ms->tgl_selesai]])->toJson() : '{}'); ?>"
+                                                    style="background: #e0f2fe; color: #0369a1;"
+                                                    title="Tugaskan Modul Pembelajaran">
+                                                    <i class="fas fa-book-reader"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                     <tr class="empty-row">
-                                        <td colspan="5" class="text-center py-5">
+                                        <td colspan="6" class="text-center py-5">
                                             <div class="empty-state">
                                                 <i class="fas fa-users-slash empty-icon"></i>
                                                 <h4>Belum Ada Siswa</h4>
@@ -144,7 +204,7 @@
                                     </tr>
                                 <?php endif; ?>
                                 <tr id="noResultsActive" style="display: none;">
-                                    <td colspan="5" class="text-center py-5">
+                                    <td colspan="6" class="text-center py-5">
                                         <div class="empty-state">
                                             <i class="fas fa-search empty-icon"></i>
                                             <h4>Tidak Ditemukan</h4>
@@ -314,10 +374,7 @@
                                                 </button>
                                             </div>
                                             <div class="d-flex justify-content-end gap-2">
-                                                <button class="btn-small btn-preview-pdf" title="Penilaian Guru"
-                                                    data-url="<?php echo e(route('pembimbing.siswa.cetakPenilaianGuru', $siswa->nisn)); ?>">
-                                                    <i class="fas fa-star"></i>
-                                                </button>
+                                                
                                                 
                                                 <button class="btn-small btn-preview-pdf" title="Laporan Akhir Siswa"
                                                     data-url="<?php echo e(route('pembimbing.siswa.cetakLaporan', $siswa->nisn)); ?>">
@@ -527,6 +584,134 @@
         </div>
     </div>
     
+    <div class="modal fade" id="modalAssignModul" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header bg-primary text-white p-3 px-4" style="border-radius: 20px 20px 0 0;">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fas fa-book-reader fs-5"></i>
+                        <h6 class="modal-title fw-bold mb-0">Tugaskan Modul Pembelajaran</h6>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formAssignModul" method="POST">
+                    <?php echo csrf_field(); ?>
+                    <div class="modal-body p-4">
+                        <div class="mb-3">
+                            <span class="text-muted small">Siswa:</span>
+                            <h6 class="fw-bold text-dark mb-0" id="assign_siswa_nama">-</h6>
+                        </div>
+                        <p class="text-muted small mb-3">Pilih modul pembelajaran yang harus dipelajari dan diselesaikan oleh siswa ini:</p>
+                        
+                        <div class="d-flex flex-column gap-2 mb-3">
+                            <?php $__empty_1 = true; $__currentLoopData = $daftarModul; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mod): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <label class="border p-3 rounded-4 d-flex align-items-center gap-3 cursor-pointer modul-option-label" data-modul-id="<?php echo e($mod->id_modul); ?>" style="background: #f8fafc;">
+                                    <input type="checkbox" name="id_modul[]" value="<?php echo e($mod->id_modul); ?>" class="form-check-input modul-checkbox" style="width: 20px; height: 20px;">
+                                    <div class="flex-grow-1">
+                                        <div class="fw-bold text-dark"><?php echo e($mod->judul); ?></div>
+                                        <small class="text-muted"><i class="fas fa-stopwatch me-1"></i> <?php echo e($mod->durasi_kuis); ?> Menit | <?php echo e($mod->soals->count()); ?> Soal</small>
+                                    </div>
+                                </label>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                <div class="alert alert-warning rounded-4 small mb-0">
+                                    <i class="fas fa-exclamation-circle me-1"></i> Anda belum memiliki modul pembelajaran. Silakan buat modul terlebih dahulu pada menu <a href="<?php echo e(route('pembimbing.modul.create')); ?>" class="fw-bold">Modul Pembelajaran</a>.
+                                </div>
+                            <?php endif; ?>
+
+                            <div id="assignModulAllAssignedAlert" class="alert alert-info rounded-4 small mb-0 d-none">
+                                <i class="fas fa-check-circle me-1"></i> Semua modul pembelajaran yang Anda miliki sudah ditugaskan kepada siswa ini. Anda dapat mengedit / merevisi modul yang sudah ditugaskan langsung pada tabel daftar siswa.
+                            </div>
+                        </div>
+
+                        
+                        <div id="dateRangeFields" class="d-none">
+                            <hr class="my-2">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small">Tanggal Mulai Akses Modul</label>
+                                <input type="date" name="tgl_mulai" class="form-control form-control-sm rounded-3">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label fw-bold small">Tanggal Selesai Akses Modul</label>
+                                <input type="date" name="tgl_selesai" class="form-control form-control-sm rounded-3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 p-3 px-4 bg-light" style="border-radius: 0 0 20px 20px;">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" id="btnSubmitAssignModul" class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold">Simpan Penugasan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal fade" id="modalEditModulSiswa" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header bg-warning text-dark p-3 px-4" style="border-radius: 20px 20px 0 0;">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fas fa-edit fs-5"></i>
+                        <h6 class="modal-title fw-bold mb-0">Revisi Penugasan Modul Siswa</h6>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formEditModulSiswa" method="POST">
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('PUT'); ?>
+                    <div class="modal-body p-4">
+                        <div class="mb-3 p-3 bg-light rounded-4 border">
+                            <div class="small text-muted mb-1">Siswa: <strong class="text-dark" id="edit_modul_siswa_nama">-</strong></div>
+                            <div class="small text-muted">Modul: <strong class="text-primary" id="edit_modul_judul">-</strong></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Tanggal Mulai Akses Modul <span class="text-danger">*</span></label>
+                            <input type="date" name="tgl_mulai" id="edit_modul_tgl_mulai" class="form-control rounded-3" required>
+                            <small class="text-muted">Siswa baru dapat membuka modul pada tanggal ini.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Tanggal Selesai Akses Modul <span class="text-danger">*</span></label>
+                            <input type="date" name="tgl_selesai" id="edit_modul_tgl_selesai" class="form-control rounded-3" required>
+                            <small class="text-muted">Setelah tanggal ini, siswa tidak dapat lagi mengerjakan modul.</small>
+                        </div>
+
+                        <div id="wrapperResetKuis" class="mb-3 p-3 rounded-4 border bg-warning-subtle d-none">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="reset_kuis" value="1" id="checkResetKuis">
+                                <label class="form-check-label fw-bold small text-dark" for="checkResetKuis">
+                                    <i class="fas fa-redo me-1"></i> Berikan Kesempatan Mengulang (Reset Nilai & Kuis)
+                                </label>
+                            </div>
+                            <small class="text-muted d-block mt-1">Siswa sudah menyelesaikan kuis dengan nilai: <strong id="edit_modul_nilai_label">-</strong>. Centang opsi ini jika Anda ingin siswa mengulang kuis sebagai revisi.</small>
+                        </div>
+
+                        <hr class="my-3">
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted small">Ingin membatalkan modul ini?</span>
+                            <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" id="btnHapusPenugasanModul">
+                                <i class="fas fa-trash me-1"></i> Hapus Penugasan
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 p-3 px-4 bg-light" style="border-radius: 0 0 20px 20px;">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-warning text-dark rounded-pill px-4 shadow-sm fw-bold">Simpan Revisi</button>
+                    </div>
+                </form>
+
+                
+                <form id="formDeleteModulSiswa" method="POST" style="display: none;">
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('DELETE'); ?>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
     <div class="modal fade preview-pdf-modal" id="previewPdfModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-pdf-viewer modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
@@ -552,7 +737,7 @@
                     <div id="pdfCanvasContainer">
                         <div id="pdfLoadingIndicator">
                             <div class="loader-logo-container">
-                                <img src="<?php echo e(asset('images/unsri-pride.png')); ?>" alt="UNSRI">
+                                <img src="<?php echo e(asset('images/loogo.png')); ?>" alt="BPS">
                             </div>
                             
                         </div>
@@ -570,6 +755,111 @@
     <?php $__env->startPush('scripts'); ?>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
         <script src="<?php echo e(asset('assets/js/pembimbing/daftarSiswa.js')); ?>"></script>
+        <script>
+            // Fungsi untuk toggle field tanggal berdasarkan checkbox
+            function toggleDateFields() {
+                const anyChecked = Array.from(document.querySelectorAll('.modul-checkbox')).some(cb => cb.checked);
+                const dateFields = document.getElementById('dateRangeFields');
+                if (anyChecked) {
+                    dateFields.classList.remove('d-none');
+                    dateFields.querySelectorAll('input[type="date"]').forEach(inp => inp.setAttribute('required', 'required'));
+                } else {
+                    dateFields.classList.add('d-none');
+                    dateFields.querySelectorAll('input[type="date"]').forEach(inp => inp.removeAttribute('required'));
+                }
+            }
+
+            document.querySelectorAll('.btn-assign-modul').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const nisn     = this.dataset.nisn;
+                    const nama     = this.dataset.nama;
+                    const assigned = JSON.parse(this.dataset.assigned || '[]');
+
+                    document.getElementById('assign_siswa_nama').textContent = nama + ' (' + nisn + ')';
+                    document.getElementById('formAssignModul').action = '/pembimbing/siswa/' + nisn + '/assign-modul';
+
+                    let availableCount = 0;
+                    document.querySelectorAll('.modul-option-label').forEach(label => {
+                        const modId = parseInt(label.dataset.modulId);
+                        const cb = label.querySelector('.modul-checkbox');
+                        cb.checked = false;
+                        if (assigned.includes(modId)) {
+                            // Modul yang sudah ditambahkan sebelumnya TIDAK ADA DISITU LAGI
+                            label.classList.add('d-none');
+                        } else {
+                            label.classList.remove('d-none');
+                            availableCount++;
+                        }
+                    });
+
+                    const emptyAlert = document.getElementById('assignModulAllAssignedAlert');
+                    const submitBtn  = document.getElementById('btnSubmitAssignModul');
+                    if (availableCount === 0) {
+                        if (emptyAlert) emptyAlert.classList.remove('d-none');
+                        if (submitBtn) submitBtn.classList.add('d-none');
+                    } else {
+                        if (emptyAlert) emptyAlert.classList.add('d-none');
+                        if (submitBtn) submitBtn.classList.remove('d-none');
+                    }
+
+                    // Reset field tanggal saat modal dibuka
+                    const tglMulaiInput   = document.querySelector('#dateRangeFields input[name="tgl_mulai"]');
+                    const tglSelesaiInput = document.querySelector('#dateRangeFields input[name="tgl_selesai"]');
+                    if (tglMulaiInput)   tglMulaiInput.value   = '';
+                    if (tglSelesaiInput) tglSelesaiInput.value = '';
+
+                    toggleDateFields();
+                });
+            });
+
+            // Listener untuk tombol revisi modul siswa
+            document.querySelectorAll('.btn-edit-modul-siswa').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const judul        = this.dataset.judul;
+                    const siswa        = this.dataset.siswa;
+                    const mulai        = this.dataset.mulai;
+                    const selesai      = this.dataset.selesai;
+                    const selesaiKuis  = this.dataset.selesaiKuis;
+                    const nilai        = this.dataset.nilai;
+                    const updateAction = this.dataset.updateAction;
+                    const deleteAction = this.dataset.deleteAction;
+
+                    document.getElementById('edit_modul_siswa_nama').textContent = siswa;
+                    document.getElementById('edit_modul_judul').textContent = judul;
+                    document.getElementById('edit_modul_tgl_mulai').value = mulai;
+                    document.getElementById('edit_modul_tgl_selesai').value = selesai;
+
+                    const wrapperReset = document.getElementById('wrapperResetKuis');
+                    const checkReset   = document.getElementById('checkResetKuis');
+                    if (checkReset) checkReset.checked = false;
+
+                    if (selesaiKuis === '1') {
+                        if (wrapperReset) wrapperReset.classList.remove('d-none');
+                        const nilaiEl = document.getElementById('edit_modul_nilai_label');
+                        if (nilaiEl) nilaiEl.textContent = nilai;
+                    } else {
+                        if (wrapperReset) wrapperReset.classList.add('d-none');
+                    }
+
+                    document.getElementById('formEditModulSiswa').action = updateAction;
+                    document.getElementById('formDeleteModulSiswa').action = deleteAction;
+                });
+            });
+
+            const btnHapus = document.getElementById('btnHapusPenugasanModul');
+            if (btnHapus) {
+                btnHapus.addEventListener('click', function() {
+                    if (confirm('Apakah Anda yakin ingin membatalkan / menghapus modul ini dari siswa?')) {
+                        document.getElementById('formDeleteModulSiswa').submit();
+                    }
+                });
+            }
+
+            // Listener untuk setiap checkbox modul
+            document.querySelectorAll('.modul-checkbox').forEach(cb => {
+                cb.addEventListener('change', toggleDateFields);
+            });
+        </script>
     <?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
 

@@ -7,7 +7,7 @@
     
     <!-- Fonts & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="<?php echo e(asset('assets/css/auth/login.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/auth/login.css')); ?>?v=<?php echo e(time()); ?>">
 </head>
 
 <body class="login-page">
@@ -19,9 +19,9 @@
             <div class="login-info-section">
                 <div class="info-overlay"></div>
                 <div class="info-content">
-                    <img src="<?php echo e(asset('images/unsri-pride.png')); ?>" alt="Logo UNSRI" class="info-logo">
+                    <img src="<?php echo e(asset('images/loogo.png')); ?>" alt="Logo BPS" class="info-logo">
                     <h2>Monitoring Siswa Magang</h2>
-                    <p>Sistem Informasi Monitoring Siswa Magang SMA/SMK Pada Fakultas Ilmu Komputer Universitas Sriwijaya</p>
+                    <p>Sistem Informasi Monitoring Siswa Magang Pada Badan Pusat Statistik (BPS) Kabupaten Muara Enim</p>
                     <div class="info-divider"></div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
             <div class="login-form-section">
                 <div class="form-content">
                     <div class="mobile-logo">
-                        <img src="<?php echo e(asset('images/unsri-pride.png')); ?>" alt="Logo UNSRI">
+                        <img src="<?php echo e(asset('images/loogo.png')); ?>" alt="Logo BPS">
                         <h3>Monitoring Siswa</h3>
                     </div>
 
@@ -81,13 +81,11 @@
                         </div>
 
                         <button type="submit" class="btn-primary" id="btn-login">LOGIN</button>
-
-                        <div class="form-footer">
-                            <p class="register-link">
-                                Belum punya akun? <a href="<?php echo e(route('register')); ?>"><b>Daftar Sekarang</b></a>
-                            </p>
-                        </div>
                     </form>
+
+                    <div class="text-center mt-3 pt-2" style="font-size: 0.9rem; color: #64748b;">
+                        Belum punya akun? <a href="<?php echo e(route('register')); ?>" style="color: #2563eb; font-weight: 700; text-decoration: none;">Daftar Siswa Baru</a>
+                    </div>
                 </div>
             </div>
         </div>

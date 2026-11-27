@@ -87,18 +87,18 @@
         <div class="shape shape-br"></div>
         <div class="shape shape-br-accent"></div>
         <div class="frame"></div>
-        @php $unsriLogo = public_path('images/unsri-pride.png'); @endphp
-        @if(file_exists($unsriLogo))
-            <img src="{{ $unsriLogo }}" class="watermark">
+        @php $bpsLogo = public_path('images/loogo.png'); @endphp
+        @if(file_exists($bpsLogo))
+            <img src="{{ $bpsLogo }}" class="watermark">
         @endif
         <div class="content">
             <table class="header-table">
                 <tr>
-                    <td class="logo-box unsri">@if(file_exists($unsriLogo)) <img src="{{ $unsriLogo }}" width="100"> @endif</td>
+                    <td class="logo-box unsri">@if(file_exists($bpsLogo)) <img src="{{ $bpsLogo }}" width="100"> @endif</td>
                     <td class="header-text" align="center">
-                        <h1>Universitas Sriwijaya</h1>
-                        <h2>FAKULTAS ILMU KOMPUTER</h2>
-                        <p>www.ilkom.unsri.ac.id</p>
+                        <h1>BADAN PUSAT STATISTIK</h1>
+                        <h2>KABUPATEN MUARA ENIM</h2>
+                        <p>muaraenimkab.bps.go.id</p>
                     </td>
                     <td class="logo-box tutwuri" align="right">
                         @php $tutWuriLogo = public_path('images/logo-tutwuri.png'); @endphp
@@ -110,6 +110,13 @@
             <h1 class="main-title">{{ $konfigurasi->header_1 ?? 'SERTIFIKAT' }}</h1>
             <div class="given-text">{{ $konfigurasi->header_2 ?? 'DIBERIKAN KEPADA :' }}</div>
             <div class="student-name">{{ $user->nama }}</div>
+            @if(!empty($konfigurasi->predikat_nilai))
+                <div style="margin: 8px auto 4px auto;">
+                    <span style="display: inline-block; padding: 4px 18px; border: 1.5px solid {{ $konfigurasi->color_primary ?? '#1a5fb4' }}; border-radius: 15px; background-color: #ffffff; color: {{ $konfigurasi->color_primary ?? '#1a5fb4' }}; font-weight: bold; font-size: 15px; letter-spacing: 0.5px;">
+                        Predikat: {{ $konfigurasi->predikat_nilai }}
+                    </span>
+                </div>
+            @endif
             <div class="description">
                 @if(isset($konfigurasi->template_isi))
                     @php
@@ -117,10 +124,12 @@
                         $tglSelesai = \Carbon\Carbon::parse($user->tgl_selesai_magang)->translatedFormat('d F Y');
                         $desc = str_replace('{tgl_mulai}', $tglMulai, $konfigurasi->template_isi);
                         $desc = str_replace('{tgl_selesai}', $tglSelesai, $desc);
+                        $desc = str_replace('{predikat}', $konfigurasi->predikat_nilai ?? 'A — Sangat Baik', $desc);
+                        $desc = str_replace('{nilai}', $konfigurasi->predikat_nilai ?? 'A — Sangat Baik', $desc);
                         echo $desc;
                     @endphp
                 @else
-                    Atas partisipasinya sebagai Peserta Magang di Fakultas Ilmu Komputer Universitas Sriwijaya selama periode&nbsp; 
+                    Atas partisipasinya sebagai Peserta Magang di Badan Pusat Statistik (BPS) Kabupaten Muara Enim selama periode&nbsp; 
                     <strong>{{ \Carbon\Carbon::parse($user->tgl_mulai_magang)->translatedFormat('d F Y') }}</strong> sampai dengan 
                     <strong>{{ \Carbon\Carbon::parse($user->tgl_selesai_magang)->translatedFormat('d F Y') }}</strong>, 
                     serta telah menyelesaikan kegiatan magang dengan baik dan menunjukkan kinerja yang disiplin dan bertanggung jawab.
@@ -128,8 +137,8 @@
             </div>
             <div class="footer">
                 <div class="signature-block">
-                    <div class="date-location">Palembang, {{ \Carbon\Carbon::parse($user->tgl_selesai_magang)->translatedFormat('d F Y') }}</div>
-                    <div style="font-size: 16px;">{{ $konfigurasi->header_3 ?? 'Dekan,' }}</div>
+                    <div class="date-location">Muara Enim, {{ \Carbon\Carbon::parse($user->tgl_selesai_magang)->translatedFormat('d F Y') }}</div>
+                    <div style="font-size: 16px;">{{ $konfigurasi->header_3 ?? 'Kepala BPS Kabupaten Muara Enim,' }}</div>
                     <br><br><br><br><br>
                     <div class="signer-name">{{ $konfigurasi->header_4 ?? 'Prof. Dr. Erwin, S.Si., M.Si.' }}</div>
                     <div class="signer-nip">{{ $konfigurasi->header_5 ?? 'NIP. 197412122000031002' }}</div>

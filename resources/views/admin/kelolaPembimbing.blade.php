@@ -18,10 +18,7 @@
                     <i class="fas fa-users"></i>
                     <span>Siswa</span>
                 </a>
-                <a href="{{ route('admin.kelolaGuru') }}" class="tab-button text-decoration-none flex-fill justify-content-center text-center {{ Route::is('admin.kelolaGuru') ? 'active' : '' }}">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                    <span>Guru</span>
-                </a>
+                
                 <a href="{{ route('admin.kelolaPembimbing') }}" class="tab-button text-decoration-none flex-fill justify-content-center text-center {{ Route::is('admin.kelolaPembimbing') ? 'active' : '' }}">
                     <i class="fas fa-user-tie"></i>
                     <span>Pembimbing</span>
@@ -224,8 +221,7 @@
                                     <i class="fas fa-building input-icon"></i>
                                     <select name="instansi" class="p-input with-icon" required style="appearance: auto;">
                                         <option value="">-- Pilih Instansi --</option>
-                                        <option value="Fasilkom Unsri Indralaya">Fasilkom Unsri Indralaya</option>
-                                        <option value="Fasilkom Unsri Bukit">Fasilkom Unsri Bukit</option>
+                                        <option value="BPS Kabupaten Muara Enim">BPS Kabupaten Muara Enim</option>
                                     </select>
                                 </div>
                             </div>
@@ -333,8 +329,7 @@
                                     <select name="instansi" id="edit_instansi" class="p-input with-icon" required
                                         style="appearance: auto;">
                                         <option value="">-- Pilih Instansi --</option>
-                                        <option value="Fasilkom Unsri Indralaya">Fasilkom Unsri Indralaya</option>
-                                        <option value="Fasilkom Unsri Bukit">Fasilkom Unsri Bukit</option>
+                                        <option value="BPS Kabupaten Muara Enim">BPS Kabupaten Muara Enim</option>
                                     </select>
                                 </div>
                             </div>

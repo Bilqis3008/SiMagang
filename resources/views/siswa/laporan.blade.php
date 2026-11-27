@@ -196,11 +196,10 @@
                         <h5 class="page-title mb-1-5">Rekap Penilaian Siswa</h5>
                         
                         @php
-                            $hasGuruPenilaian = $penilaians->contains('pemberi_nilai', 'Guru Pembimbing');
                             $hasPembimbingPenilaian = $penilaians->contains('pemberi_nilai', 'Dosen Pembimbing');
                         @endphp
 
-                        @if($user->status == 'selesai' && $hasGuruPenilaian && $hasPembimbingPenilaian)
+                        @if($user->status == 'selesai' && $hasPembimbingPenilaian)
                             <div class="ui-alert ui-alert-success mb-4 alert-premium">
                                 <div class="d-flex align-center gap-1-5">
                                     <div class="icon-box-primary">
@@ -219,7 +218,7 @@
                             </div>
                         @endif
 
-                        <p class="page-subtitle mb-4">Berikut adalah daftar penilaian yang telah diberikan oleh Pembimbing Lapangan dan Guru Pembimbing.</p>
+                        <p class="page-subtitle mb-4">Berikut adalah daftar penilaian yang telah diberikan oleh Pembimbing Lapangan.</p>
 
 
                         <div class="assessment-list">
@@ -304,7 +303,7 @@
                     <div id="pdfCanvasContainer">
                         <div id="pdfLoadingIndicator">
                             <div class="loader-logo-container">
-                                <img src="{{ asset('images/unsri-pride.png') }}" alt="UNSRI">
+                                <img src="{{ asset('images/loogo.png') }}" alt="BPS">
                             </div>
                             
                         </div>

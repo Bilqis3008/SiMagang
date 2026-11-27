@@ -87,18 +87,18 @@
         <div class="shape shape-br"></div>
         <div class="shape shape-br-accent"></div>
         <div class="frame"></div>
-        <?php $unsriLogo = public_path('images/unsri-pride.png'); ?>
-        <?php if(file_exists($unsriLogo)): ?>
-            <img src="<?php echo e($unsriLogo); ?>" class="watermark">
+        <?php $bpsLogo = public_path('images/loogo.png'); ?>
+        <?php if(file_exists($bpsLogo)): ?>
+            <img src="<?php echo e($bpsLogo); ?>" class="watermark">
         <?php endif; ?>
         <div class="content">
             <table class="header-table">
                 <tr>
-                    <td class="logo-box unsri"><?php if(file_exists($unsriLogo)): ?> <img src="<?php echo e($unsriLogo); ?>" width="100"> <?php endif; ?></td>
+                    <td class="logo-box unsri"><?php if(file_exists($bpsLogo)): ?> <img src="<?php echo e($bpsLogo); ?>" width="100"> <?php endif; ?></td>
                     <td class="header-text" align="center">
-                        <h1>Universitas Sriwijaya</h1>
-                        <h2>FAKULTAS ILMU KOMPUTER</h2>
-                        <p>www.ilkom.unsri.ac.id</p>
+                        <h1>BADAN PUSAT STATISTIK</h1>
+                        <h2>KABUPATEN MUARA ENIM</h2>
+                        <p>muaraenimkab.bps.go.id</p>
                     </td>
                     <td class="logo-box tutwuri" align="right">
                         <?php $tutWuriLogo = public_path('images/logo-tutwuri.png'); ?>
@@ -110,6 +110,14 @@
             <h1 class="main-title"><?php echo e($konfigurasi->header_1 ?? 'SERTIFIKAT'); ?></h1>
             <div class="given-text"><?php echo e($konfigurasi->header_2 ?? 'DIBERIKAN KEPADA :'); ?></div>
             <div class="student-name"><?php echo e($user->nama); ?></div>
+            <?php if(!empty($konfigurasi->predikat_nilai)): ?>
+                <div style="margin: 8px auto 4px auto;">
+                    <span style="display: inline-block; padding: 4px 18px; border: 1.5px solid <?php echo e($konfigurasi->color_primary ?? '#1a5fb4'); ?>; border-radius: 15px; background-color: #ffffff; color: <?php echo e($konfigurasi->color_primary ?? '#1a5fb4'); ?>; font-weight: bold; font-size: 15px; letter-spacing: 0.5px;">
+                        Predikat: <?php echo e($konfigurasi->predikat_nilai); ?>
+
+                    </span>
+                </div>
+            <?php endif; ?>
             <div class="description">
                 <?php if(isset($konfigurasi->template_isi)): ?>
                     <?php
@@ -117,10 +125,12 @@
                         $tglSelesai = \Carbon\Carbon::parse($user->tgl_selesai_magang)->translatedFormat('d F Y');
                         $desc = str_replace('{tgl_mulai}', $tglMulai, $konfigurasi->template_isi);
                         $desc = str_replace('{tgl_selesai}', $tglSelesai, $desc);
+                        $desc = str_replace('{predikat}', $konfigurasi->predikat_nilai ?? 'A — Sangat Baik', $desc);
+                        $desc = str_replace('{nilai}', $konfigurasi->predikat_nilai ?? 'A — Sangat Baik', $desc);
                         echo $desc;
                     ?>
                 <?php else: ?>
-                    Atas partisipasinya sebagai Peserta Magang di Fakultas Ilmu Komputer Universitas Sriwijaya selama periode&nbsp; 
+                    Atas partisipasinya sebagai Peserta Magang di Badan Pusat Statistik (BPS) Kabupaten Muara Enim selama periode&nbsp; 
                     <strong><?php echo e(\Carbon\Carbon::parse($user->tgl_mulai_magang)->translatedFormat('d F Y')); ?></strong> sampai dengan 
                     <strong><?php echo e(\Carbon\Carbon::parse($user->tgl_selesai_magang)->translatedFormat('d F Y')); ?></strong>, 
                     serta telah menyelesaikan kegiatan magang dengan baik dan menunjukkan kinerja yang disiplin dan bertanggung jawab.
@@ -128,8 +138,8 @@
             </div>
             <div class="footer">
                 <div class="signature-block">
-                    <div class="date-location">Palembang, <?php echo e(\Carbon\Carbon::parse($user->tgl_selesai_magang)->translatedFormat('d F Y')); ?></div>
-                    <div style="font-size: 16px;"><?php echo e($konfigurasi->header_3 ?? 'Dekan,'); ?></div>
+                    <div class="date-location">Muara Enim, <?php echo e(\Carbon\Carbon::parse($user->tgl_selesai_magang)->translatedFormat('d F Y')); ?></div>
+                    <div style="font-size: 16px;"><?php echo e($konfigurasi->header_3 ?? 'Kepala BPS Kabupaten Muara Enim,'); ?></div>
                     <br><br><br><br><br>
                     <div class="signer-name"><?php echo e($konfigurasi->header_4 ?? 'Prof. Dr. Erwin, S.Si., M.Si.'); ?></div>
                     <div class="signer-nip"><?php echo e($konfigurasi->header_5 ?? 'NIP. 197412122000031002'); ?></div>

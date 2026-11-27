@@ -22,16 +22,16 @@
     <div class="top-info-bar d-none d-md-block">
         <div class="container">
             <div><i class="fas fa-clock"></i> 8:00AM - 4:00PM | Senin - Jum'at</div>
-            <div><i class="fas fa-envelope"></i> humas@ilkom.unsri.ac.id</div>
+            <div><i class="fas fa-envelope"></i> bps1603@bps.go.id</div>
         </div>
     </div>
     <nav class="custom-navbar">
         <div class="container">
             <a class="navbar-brand" href="{{ route('siswa.siswa') }}">
-                <img src="{{ asset('images/unsri-pride.png') }}" alt="Logo" width="40" class="me-2">
+                <img src="{{ asset('images/loogo.png') }}" alt="Logo BPS" width="40" class="me-2">
                 <div class="brand-text">
-                    <div class="subtitle">FACULTY OF</div>
-                    <div class="main-title">COMPUTER SCIENCE</div>
+                    <div class="subtitle">BADAN PUSAT STATISTIK</div>
+                    <div class="main-title">KABUPATEN MUARA ENIM</div>
                 </div>
             </a>
 
@@ -52,6 +52,10 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('siswa.pengajuan') ? 'active' : '' }}"
                             href="{{ route('siswa.pengajuan') }}">Lupa Isi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('siswa.modul*') ? 'active' : '' }}"
+                            href="{{ route('siswa.modul.index') }}">Modul</a>
                     </li>
                     @php
                         $penilaianCount = 0;

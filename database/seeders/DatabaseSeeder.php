@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder
     {
         // Buat akun admin default
         Admin::create([
-            'nama'     => 'Administrator',
+            'nama'     => 'Bilqis Nabila Ummami',
             'email'    => 'zuhrimubarak@gmail.com',
-            'password' => 'zuhri123', // akan otomatis di-hash oleh casts di model
+            'password' => 'admin123', // akan otomatis di-hash oleh casts di model
             'role'     => 'Admin',
         ]);
     }

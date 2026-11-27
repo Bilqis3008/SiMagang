@@ -403,7 +403,7 @@
                     <div id="pdfCanvasContainer">
                         <div id="pdfLoadingIndicator">
                             <div class="loader-logo-container">
-                                <img src="<?php echo e(asset('images/unsri-pride.png')); ?>" alt="UNSRI">
+                                <img src="<?php echo e(asset('images/loogo.png')); ?>" alt="BPS">
                             </div>
                             
                         </div>

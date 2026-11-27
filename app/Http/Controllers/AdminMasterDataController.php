@@ -138,25 +138,25 @@ class AdminMasterDataController extends Controller
         return back()->with('success', 'Informasi dashboard berhasil diperbarui.')->with('active_tab', 'informasi');
     }
 
-    // --- PROGRAM STUDI ---
+    // --- DIVISI / BIDANG ---
     public function storeProdi(Request $request)
     {
         $validated = $request->validate([
             'nama'      => 'required|string|max:150',
-            'jenjang'   => 'required|string|max:10',
+            'jenjang'   => 'nullable|string|max:50',
             'warna_dot' => 'nullable|string|max:20',
             'urutan'    => 'nullable|integer',
         ]);
 
         ProgramStudi::create([
             'nama'      => $validated['nama'],
-            'jenjang'   => $validated['jenjang'],
+            'jenjang'   => $validated['jenjang'] ?? '-',
             'warna_dot' => $validated['warna_dot'] ?? '#4e73df',
             'urutan'    => $validated['urutan'] ?? (ProgramStudi::max('urutan') + 1),
             'aktif'     => true,
         ]);
 
-        return back()->with('success', 'Program studi berhasil ditambahkan.')->with('active_tab', 'informasi');
+        return back()->with('success', 'Divisi berhasil ditambahkan.')->with('active_tab', 'informasi');
     }
 
     public function updateProdi(Request $request, $id)
@@ -164,7 +164,7 @@ class AdminMasterDataController extends Controller
         $prodi     = ProgramStudi::findOrFail($id);
         $validated = $request->validate([
             'nama'      => 'required|string|max:150',
-            'jenjang'   => 'required|string|max:10',
+            'jenjang'   => 'nullable|string|max:50',
             'warna_dot' => 'nullable|string|max:20',
             'urutan'    => 'nullable|integer',
             'aktif'     => 'nullable|boolean',
@@ -172,19 +172,19 @@ class AdminMasterDataController extends Controller
 
         $prodi->update([
             'nama'      => $validated['nama'],
-            'jenjang'   => $validated['jenjang'],
+            'jenjang'   => $validated['jenjang'] ?? $prodi->jenjang,
             'warna_dot' => $validated['warna_dot'] ?? $prodi->warna_dot,
             'urutan'    => $validated['urutan'] ?? $prodi->urutan,
             'aktif'     => isset($validated['aktif']) ? (bool)$validated['aktif'] : $prodi->aktif,
         ]);
 
-        return back()->with('success', 'Program studi berhasil diperbarui.')->with('active_tab', 'informasi');
+        return back()->with('success', 'Divisi berhasil diperbarui.')->with('active_tab', 'informasi');
     }
 
     public function destroyProdi($id)
     {
         ProgramStudi::destroy($id);
-        return back()->with('success', 'Program studi berhasil dihapus.')->with('active_tab', 'informasi');
+        return back()->with('success', 'Divisi berhasil dihapus.')->with('active_tab', 'informasi');
     }
 
     public function updateKonfigurasiLaporan(Request $request)
@@ -201,6 +201,7 @@ class AdminMasterDataController extends Controller
             'konfigurasi.*.color_secondary' => 'nullable|string|max:7',
             'konfigurasi.*.background_color' => 'nullable|string|max:7',
             'konfigurasi.*.template_isi' => 'nullable|string',
+            'konfigurasi.*.predikat_nilai' => 'nullable|string|max:100',
         ]);
 
         foreach ($validated['konfigurasi'] as $config) {

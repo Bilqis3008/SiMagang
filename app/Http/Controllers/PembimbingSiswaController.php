@@ -36,7 +36,8 @@ class PembimbingSiswaController extends PembimbingBaseController
         $allSiswas = $query->with([
             'guru', 'pembimbing', 'tahunAjaran',
             'absensis' => fn($q) => $q->whereDate('tanggal', $today),
-            'penilaians' => fn($q) => $q->where('pemberi_nilai', 'Dosen Pembimbing')
+            'penilaians' => fn($q) => $q->where('pemberi_nilai', 'Dosen Pembimbing'),
+            'modulSiswas.modul',
         ])->orderBy('nama', 'asc')->get();
 
         foreach ($allSiswas as $s) {
@@ -45,21 +46,115 @@ class PembimbingSiswaController extends PembimbingBaseController
         }
 
         $siswasActive = $allSiswas->filter(function($s) use ($today) {
-            return $s->status !== 'selesai' && (!$s->tgl_selesai_magang || $s->tgl_selesai_magang >= $today);
+            $rawStatus = $s->getRawOriginal('status');
+            $isExplicitlySelesai = $rawStatus === 'selesai' || ($s->penilaians->isNotEmpty() && $s->tgl_selesai_magang && $s->tgl_selesai_magang < $today);
+            return !$isExplicitlySelesai;
         });
         
         $siswasHistory = $allSiswas->filter(function ($s) use ($periodeId, $today) {
-            $isSelesai = $s->status === 'selesai' || ($s->tgl_selesai_magang && $s->tgl_selesai_magang < $today);
-            if (!$isSelesai) return false;
+            $rawStatus = $s->getRawOriginal('status');
+            $isExplicitlySelesai = $rawStatus === 'selesai' || ($s->penilaians->isNotEmpty() && $s->tgl_selesai_magang && $s->tgl_selesai_magang < $today);
+            if (!$isExplicitlySelesai) return false;
             return !$periodeId || (string)$s->id_tahun_ajaran === (string)$periodeId;
         });
 
         $periodeOptions = TahunAjaran::whereHas('siswas', fn($q) => $q->where('id_pembimbing', $pembimbing->id_pembimbing))
             ->orderBy('tgl_mulai', 'desc')->get();
 
+        $daftarModul = \App\Models\ModulPembelajaran::where('id_pembimbing', $pembimbing->id_pembimbing)->get();
+
         return view('pembimbing.daftarSiswa', compact(
-            'pembimbing', 'siswasActive', 'siswasHistory', 'search', 'periodeId', 'periodeOptions'
+            'pembimbing', 'siswasActive', 'siswasHistory', 'search', 'periodeId', 'periodeOptions', 'daftarModul'
         ));
+    }
+
+    /**
+     * Menugaskan modul pembelajaran ke siswa tertentu.
+     */
+    public function assignModul(Request $request, $nisn)
+    {
+        /** @var \App\Models\Pembimbing $pembimbing */
+        $pembimbing = Auth::user();
+        $siswa = Siswa::where('id_pembimbing', $pembimbing->id_pembimbing)->where('nisn', $nisn)->firstOrFail();
+
+        $modulIds  = $request->input('id_modul', []); // array of id_modul
+        $tglMulai  = $request->input('tgl_mulai');
+        $tglSelesai = $request->input('tgl_selesai');
+
+        if (empty($modulIds)) {
+            return back()->with('warning', 'Pilih minimal satu modul pembelajaran.');
+        }
+
+        foreach ($modulIds as $mId) {
+            $existing = \App\Models\ModulSiswa::where('nisn', $siswa->nisn)->where('id_modul', $mId)->first();
+            if ($existing) {
+                // Update tanggal jika ada perubahan
+                $existing->update([
+                    'tgl_mulai'   => $tglMulai  ?: $existing->tgl_mulai,
+                    'tgl_selesai' => $tglSelesai ?: $existing->tgl_selesai,
+                ]);
+            } else {
+                \App\Models\ModulSiswa::create([
+                    'nisn'          => $siswa->nisn,
+                    'id_modul'      => $mId,
+                    'id_pembimbing' => $pembimbing->id_pembimbing,
+                    'tgl_mulai'     => $tglMulai,
+                    'tgl_selesai'   => $tglSelesai,
+                ]);
+            }
+        }
+
+        return back()->with('success', "Modul pembelajaran berhasil ditugaskan untuk siswa {$siswa->nama}.");
+    }
+
+    /**
+     * Memperbarui / merevisi penugasan modul siswa.
+     */
+    public function updateModulSiswa(Request $request, $id_modul_siswa)
+    {
+        /** @var \App\Models\Pembimbing $pembimbing */
+        $pembimbing = Auth::user();
+        $modulSiswa = \App\Models\ModulSiswa::where('id_modul_siswa', $id_modul_siswa)
+            ->where('id_pembimbing', $pembimbing->id_pembimbing)
+            ->firstOrFail();
+
+        $request->validate([
+            'tgl_mulai' => 'required|date',
+            'tgl_selesai' => 'required|date|after_or_equal:tgl_mulai',
+        ]);
+
+        $updateData = [
+            'tgl_mulai' => $request->input('tgl_mulai'),
+            'tgl_selesai' => $request->input('tgl_selesai'),
+        ];
+
+        // Jika pembimbing memilih untuk mereset kuis siswa (beri kesempatan revisi / ulang)
+        if ($request->input('reset_kuis') == '1') {
+            $updateData['kuis_selesai'] = false;
+            $updateData['nilai_kuis'] = null;
+            $updateData['kuis_dimulai_pada'] = null;
+            $updateData['kuis_selesai_pada'] = null;
+        }
+
+        $modulSiswa->update($updateData);
+
+        return back()->with('success', 'Jadwal dan ketentuan modul berhasil direvisi.');
+    }
+
+    /**
+     * Membatalkan / menghapus penugasan modul dari siswa.
+     */
+    public function deleteModulSiswa($id_modul_siswa)
+    {
+        /** @var \App\Models\Pembimbing $pembimbing */
+        $pembimbing = Auth::user();
+        $modulSiswa = \App\Models\ModulSiswa::where('id_modul_siswa', $id_modul_siswa)
+            ->where('id_pembimbing', $pembimbing->id_pembimbing)
+            ->firstOrFail();
+
+        $modulSiswa->delete();
+
+        return back()->with('success', 'Penugasan modul pembelajaran berhasil dihapus.');
     }
 
     /**

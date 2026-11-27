@@ -106,7 +106,7 @@
                     <div class="modal-body p-4">
                         <div class="mb-3">
                             <label class="form-label fw-bold">Nama Lokasi</label>
-                            <input type="text" name="nama_lokasi" class="form-control rounded-pill px-3" required placeholder="Contoh: Fasilkom Kampus Palembang">
+                            <input type="text" name="nama_lokasi" class="form-control rounded-pill px-3" required placeholder="Contoh: Kantor BPS Kabupaten Muara Enim">
                         </div>
                         <div class="row g-3">
                             <div class="col-md-6">

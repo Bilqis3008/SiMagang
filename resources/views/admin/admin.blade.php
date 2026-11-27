@@ -24,7 +24,7 @@
                     </div>
                     <div>
                         <h1 class="welcome-title">Halo, {{ $user->nama }}! 👋</h1>
-                        <p class="welcome-subtitle">Selamat datang kembali di Website Magang Fasilkom Unsri.</p>
+                        <p class="welcome-subtitle">Selamat datang kembali di Website Magang BPS Kabupaten Muara Enim.</p>
                     </div>
                 </div>
                 <div class="welcome-status">
@@ -35,16 +35,16 @@
             </div>
             <div class="home-premium-section">
                 
-                <!-- Fasilkom Banner -->
+                <!-- BPS Banner -->
                 <div class="fasilkom-banner cursor-pointer" onclick="openSejarah()">
                     <div class="banner-icon-wrapper">
-                        <img src="{{ asset('images/unsri-pride.png') }}" alt="">
+                        <img src="{{ asset('images/loogo.png') }}" alt="Logo BPS">
                     </div>
                     <div class="banner-content">
-                        <h2 class="banner-title">Fakultas Ilmu Komputer</h2>
+                        <h2 class="banner-title">Badan Pusat Statistik</h2>
                         <p class="banner-description">
-                            Universitas yang berkomitmen mencetak lulusan kompeten di bidang teknologi informasi dan ilmu komputer. 
-                            Sistem ini membantu monitoring kegiatan magang mahasiswa secara terpadu.
+                            Badan Pusat Statistik Kabupaten Muara Enim berkomitmen dalam penyediaan data statistik berkualitas untuk Indonesia Maju. 
+                            Sistem ini membantu monitoring kegiatan magang siswa secara terpadu.
                         </p>
                         <div class="banner-badge">
                             <i class="fas fa-check-circle"></i>
@@ -54,8 +54,8 @@
                     <div class="banner-more"><i class="fas fa-ellipsis-h"></i></div>
                 </div>
 
-                <!-- Tentang Fasilkom -->
-                <span class="section-title-sm">Tentang Fasilkom</span>
+                <!-- Tentang BPS -->
+                <span class="section-title-sm">Tentang BPS Muara Enim</span>
                 <div class="info-grid">
                     <div class="info-card" onclick="openVisiMisi()">
                         <div class="info-icon-box"><i class="fas fa-layer-group"></i></div>
@@ -93,21 +93,6 @@
                             Website: {{ $informasi->website_kontak }}
                         </p>
                     </div>
-                </div>
-
-                <span class="section-title-sm">Program Studi</span>
-                <div class="prodi-list-container">
-                    @forelse($programStudis as $prodi)
-                        <div class="prodi-item-simple">
-                            <div class="prodi-dot" style="background-color: {{ $prodi->warna_dot }}"></div>
-                            <span class="prodi-name">{{ $prodi->nama }}</span>
-                            <span class="prodi-badge" style="color: {{ $prodi->warna_dot }}; background-color: {{ $prodi->warna_dot }}15; border-color: {{ $prodi->warna_dot }}30">
-                                {{ $prodi->jenjang }}
-                            </span>
-                        </div>
-                    @empty
-                        <p class="text-muted small">Belum ada data program studi.</p>
-                    @endforelse
                 </div>
             </div>
         </div>

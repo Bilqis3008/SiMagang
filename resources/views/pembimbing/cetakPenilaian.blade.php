@@ -132,7 +132,7 @@
 
 <body>
     <div class="header">
-        <h1>{{ $konfigurasi->header_1 ?? 'FAKULTAS ILMU KOMPUTER UNIVERSITAS SRIWIJAYA' }}</h1>
+        <h1>{{ $konfigurasi->header_1 ?? 'BADAN PUSAT STATISTIK KABUPATEN MUARA ENIM' }}</h1>
         <h2>{{ $konfigurasi->header_2 ?? 'LEMBAR PENILAIAN SISWA MAGANG' }}</h2>
         @if(isset($konfigurasi->header_3))
             <h2>{{ str_replace('{tahun}', ($siswa->tahunAjaran->tahun_ajaran ?? '2026/2027'), $konfigurasi->header_3) }}</h2>

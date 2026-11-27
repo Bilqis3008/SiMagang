@@ -1,10 +1,10 @@
 {{-- ============================================================
      MODAL: TAMBAH SISWA
- ============================================================ --}}
+============================================================ --}}
 <div class="modal fade" id="modalTambahSiswa" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
-            <form method="POST" action="{{ route('admin.storeSiswa') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('admin.storeSiswa') }}">
                 @csrf
 
                 {{-- Header --}}
@@ -15,179 +15,182 @@
                         </div>
                         <div class="modal-header-title">
                             <h5>Registrasi Siswa Baru</h5>
-                            <p>Lengkapi formulir untuk mendaftarkan siswa magang.</p>
+                            <p>Lengkapi formulir untuk mendaftarkan akun dan data siswa magang.</p>
                         </div>
                     </div>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
 
                 {{-- Body --}}
-                <div class="modal-form-body">
+                <div class="modal-form-body bg-light">
                     <div class="row g-4">
 
-                        {{-- Kolom Kiri: Akun & Personal --}}
-                        <div class="col-md-6">
-                            <span class="form-section-label">Informasi Akun & Personal</span>
-                            <div class="mb-3">
-                                <div class="p-input-wrapper">
-                                    <i class="fas fa-user input-icon"></i>
-                                    <input type="text" name="nama" class="p-input with-icon" required placeholder="Nama Lengkap">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="p-input-wrapper">
-                                    <i class="fas fa-venus-mars input-icon"></i>
-                                    <select name="jenis_kelamin" class="p-input with-icon" required>
-                                        <option value="">-- Jenis Kelamin --</option>
-                                        <option value="L">Laki-laki</option>
-                                        <option value="P">Perempuan</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="p-input-wrapper">
-                                    <i class="fas fa-envelope input-icon"></i>
-                                    <input type="email" name="email" class="p-input with-icon" required placeholder="Email Resmi">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="p-input-wrapper">
-                                    <i class="fas fa-phone input-icon"></i>
-                                    <input type="text" name="no_hp" class="p-input with-icon" placeholder="No. WhatsApp/HP">
-                                </div>
-                            </div>
-                            <div class="row g-2">
-                                <div class="col-6">
-                                    <div class="p-input-wrapper">
-                                        <i class="fas fa-lock input-icon"></i>
-                                        <div class="input-group">
-                                            <input type="password" name="password" class="p-input with-icon" required placeholder="Sandi">
-                                            <button class="btn btn-outline-secondary toggle-password" type="button">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
+                        {{-- ══ KOLOM KIRI: PERSONAL & AKUN ════════════════ --}}
+                        <div class="col-lg-6">
+                            <div class="d-flex flex-column gap-4">
+
+                                {{-- Card: Informasi Akun & Personal --}}
+                                <div class="edit-section-block shadow-sm border-0">
+                                    <div class="edit-section-title">
+                                        <i class="fas fa-id-badge"></i> Informasi Akun & Personal
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="edit-field-label">Nama Lengkap <span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-user input-icon"></i>
+                                                <input type="text" name="nama" class="p-input with-icon" required placeholder="Nama Lengkap Siswa">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">Jenis Kelamin <span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-venus-mars input-icon"></i>
+                                                <select name="jenis_kelamin" class="p-input with-icon" required>
+                                                    
+                                                    <option value="L">Laki-laki</option>
+                                                    <option value="P">Perempuan</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">No. WhatsApp</label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fab fa-whatsapp input-icon"></i>
+                                                <input type="text" name="no_hp" class="p-input with-icon" placeholder="08xx">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="edit-field-label">Email <span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-envelope input-icon"></i>
+                                                <input type="email" name="email" class="p-input with-icon" required placeholder="siswa@gmail.com">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">Kata Sandi <span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-lock input-icon"></i>
+                                                <div class="custom-pw-group">
+                                                    <input type="password" name="password" class="p-input with-icon" required placeholder="Min. 6 Karakter">
+                                                    <button class="btn border-0 toggle-password pw-toggle-btn text-muted" type="button" tabindex="-1">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">Konfirmasi Sandi <span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-shield-alt input-icon"></i>
+                                                <div class="custom-pw-group">
+                                                    <input type="password" name="password_confirmation" class="p-input with-icon" required placeholder="Ulangi Sandi">
+                                                    <button class="btn border-0 toggle-password pw-toggle-btn text-muted" type="button" tabindex="-1">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="p-input-wrapper">
-                                        <i class="fas fa-shield-alt input-icon"></i>
-                                        <div class="input-group">
-                                            <input type="password" name="password_confirmation" class="p-input with-icon" required placeholder="Konfirmasi">
-                                            <button class="btn btn-outline-secondary toggle-password" type="button">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
+
+                            </div>
+                        </div>
+
+                        {{-- ══ KOLOM KANAN: IDENTITAS AKADEMIK & MAGANG ════════════════ --}}
+                        <div class="col-lg-6">
+                            <div class="d-flex flex-column gap-4">
+
+                                {{-- Card: Identitas Akademik & Magang --}}
+                                <div class="edit-section-block shadow-sm border-0">
+                                    <div class="edit-section-title">
+                                        <i class="fas fa-graduation-cap"></i> Identitas Akademik & Magang
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">NISN Siswa <span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-id-card input-icon"></i>
+                                                <input type="text" name="nisn" class="p-input with-icon" required placeholder="NISN Siswa">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">Tahun Ajaran <span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-calendar-alt input-icon"></i>
+                                                <select name="id_tahun_ajaran" class="p-input with-icon" required>
+                                                    
+                                                    @foreach($periodeOptions as $p)
+                                                        <option value="{{ $p->id_tahun_ajaran }}">{{ $p->label_periode }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="edit-field-label">Kelas <span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-chalkboard-user input-icon"></i>
+                                                <input type="text" name="kelas" class="p-input with-icon" required placeholder="XII-RPL">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="edit-field-label">Jurusan<span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-book-open input-icon"></i>
+                                                <input type="text" name="jurusan" class="p-input with-icon" required placeholder="Rekayasa Perangkat Lunak">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="edit-field-label">Asal Sekolah <span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-school input-icon"></i>
+                                                <input type="text" name="sekolah" id="reg_sekolah" class="p-input with-icon" required placeholder="Nama Sekolah">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">Tipe Magang <span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-users-viewfinder input-icon"></i>
+                                                <select name="tipe_magang" class="p-input with-icon" required>
+                                                    <option value="individu">Individu</option>
+                                                    <option value="kelompok">Kelompok</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">NISN Ketua (Jika Kelompok)</label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-user-shield input-icon"></i>
+                                                <input type="text" name="nisn_ketua" class="p-input with-icon" placeholder="Hanya jika Kelompok">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="edit-field-label">Pembimbing Lapangan (BPS)</label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-user-tie input-icon"></i>
+                                                <select name="id_pembimbing" class="p-input with-icon">
+                                                    <option value="">Pilih Pembimbing </option>
+                                                    @foreach($pembimbings as $d)
+                                                        <option value="{{ $d->id_pembimbing }}">{{ $d->nama }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">Tgl. Mulai</label>
+                                            <div class="p-input-wrapper">
+                                                <input type="date" name="tgl_mulai_magang" class="p-input">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">Tgl. Selesai</label>
+                                            <div class="p-input-wrapper">
+                                                <input type="date" name="tgl_selesai_magang" class="p-input">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        </div>
-
-                        {{-- Detail Akademik & Penempatan --}}
-                        <div class="col-md-6">
-                            <span class="form-section-label">Detail Akademik</span>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted mb-1">NISN <span class="req">*</span></label>
-                                    <div class="p-input-wrapper">
-                                        <i class="fas fa-id-card input-icon"></i>
-                                        <input type="text" name="nisn" class="p-input with-icon" required placeholder="10 Digit">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted mb-1">Tahun Ajaran <span class="req">*</span></label>
-                                    <div class="p-input-wrapper">
-                                        <i class="fas fa-calendar-check input-icon"></i>
-                                        <select name="id_tahun_ajaran" class="p-input with-icon" required>
-                                            <option value="">-- Pilih --</option>
-                                            @foreach($periodeOptions as $p)
-                                                <option value="{{ $p->id_tahun_ajaran }}">{{ $p->tahun_ajaran }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted mb-1">Kelas <span class="req">*</span></label>
-                                    <div class="p-input-wrapper">
-                                        <i class="fas fa-chalkboard input-icon"></i>
-                                        <input type="text" name="kelas" class="p-input with-icon" required placeholder="XII-RPL">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted mb-1">Jurusan <span class="req">*</span></label>
-                                    <div class="p-input-wrapper">
-                                        <i class="fas fa-graduation-cap input-icon"></i>
-                                        <input type="text" name="jurusan" class="p-input with-icon" required placeholder="Program Keahlian">
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="form-label small fw-bold text-muted mb-1">Cari NPSN Sekolah</label>
-                                    <div class="p-input-wrapper">
-                                        <i class="fas fa-fingerprint input-icon"></i>
-                                        <input type="text" name="npsn" id="reg_npsn" class="p-input with-icon" placeholder="Ketik NPSN untuk cari otomatis...">
-                                    </div>
-                                    <small id="reg_npsn_msg" class="text-muted"></small>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="form-label small fw-bold text-muted mb-1">Asal Lembaga Sekolah <span class="req">*</span></label>
-                                    <div class="p-input-wrapper">
-                                        <i class="fas fa-school input-icon"></i>
-                                        <input type="text" name="sekolah" id="reg_sekolah" class="p-input with-icon" required placeholder="Nama Sekolah">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- Penempatan & File --}}
-                        <div class="col-md-12">
-                            <span class="form-section-label">Penempatan & Berkas Magang</span>
-                            <div class="row g-3">
-                                <div class="col-md-4">
-                                    <label class="form-label small fw-bold text-muted mb-1">Lokasi Penempatan</label>
-                                    <div class="p-input-wrapper">
-                                        <i class="fas fa-building-circle-check input-icon"></i>
-                                        <select name="perusahaan" class="p-input with-icon">
-                                            <option value="">-- Pilih Lokasi --</option>
-                                            @foreach($lokasis as $lok)
-                                                <option value="{{ $lok->nama_lokasi }}">{{ $lok->nama_lokasi }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label small fw-bold text-muted mb-1">Tipe</label>
-                                    <div class="p-input-wrapper">
-                                        <select name="tipe_magang" class="p-input" required>
-                                            <option value="individu">Individu</option>
-                                            <option value="kelompok">Kelompok</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label small fw-bold text-muted mb-1">NISN Ketua (Grup)</label>
-                                    <div class="p-input-wrapper">
-                                        <input type="text" name="nisn_ketua" class="p-input" placeholder="Hanya jika Grup">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label small fw-bold text-muted mb-1">Surat Balasan (PDF/JPG)</label>
-                                    <div class="p-input-wrapper">
-                                        <input type="file" name="surat_balasan" class="p-input" accept=".pdf,.jpg,.jpeg,.png">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label small fw-bold text-muted mb-1">Tgl. Mulai</label>
-                                    <div class="p-input-wrapper">
-                                        <input type="date" name="tgl_mulai_magang" class="p-input" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label small fw-bold text-muted mb-1">Tgl. Selesai</label>
-                                    <div class="p-input-wrapper">
-                                        <input type="date" name="tgl_selesai_magang" class="p-input" required>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -208,9 +211,9 @@
      MODAL: EDIT SISWA
 ============================================================ --}}
 <div class="modal fade" id="modalEditSiswa" tabindex="-1">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
-            <form id="formEditSiswa" method="POST" enctype="multipart/form-data">
+            <form id="formEditSiswa" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -221,25 +224,25 @@
                             <i class="fas fa-user-edit"></i>
                         </div>
                         <div class="modal-header-title">
-                            <h5 class="fw-bold">Ubah Profil Siswa</h5>
-                            <p class="mb-0">Perbarui informasi data siswa magang secara mendetail.</p>
+                            <h5>Ubah Data Siswa</h5>
+                            <p>Perbarui data profil dan status magang siswa.</p>
                         </div>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
-                {{-- Body: 2-Column Balanced Layout --}}
+                {{-- Body --}}
                 <div class="modal-form-body bg-light">
                     <div class="row g-4">
 
-                        {{-- ══ KOLOM KIRI: PERSONAL & AKADEMIK ════════════════ --}}
-                        <div class="col-md-6">
+                        {{-- ══ KOLOM KIRI: PERSONAL & AKUN ════════════════ --}}
+                        <div class="col-lg-6">
                             <div class="d-flex flex-column gap-4">
-                                
-                                {{-- Card: Informasi Kontak --}}
+
+                                {{-- Card: Informasi Personal --}}
                                 <div class="edit-section-block shadow-sm border-0">
                                     <div class="edit-section-title">
-                                        <i class="fas fa-id-badge"></i> Informasi Personal
+                                        <i class="fas fa-id-badge"></i> Informasi Personal & Akun
                                     </div>
                                     <div class="row g-3">
                                         <div class="col-12">
@@ -247,6 +250,13 @@
                                             <div class="p-input-wrapper">
                                                 <i class="fas fa-user input-icon"></i>
                                                 <input type="text" name="nama" id="edit_nama" class="p-input with-icon" required placeholder="Nama Lengkap">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">NISN Siswa <span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-id-card input-icon"></i>
+                                                <input type="text" name="nisn" id="edit_nisn" class="p-input with-icon" required readonly style="background-color: #f1f5f9;">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -259,73 +269,30 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label class="edit-field-label">No. WhatsApp</label>
-                                            <div class="p-input-wrapper">
-                                                <i class="fas fa-phone-alt input-icon"></i>
-                                                <input type="text" name="no_hp" id="edit_hp" class="p-input with-icon" placeholder="08xx...">
-                                            </div>
-                                        </div>
                                         <div class="col-12">
                                             <label class="edit-field-label">Email Resmi <span class="req">*</span></label>
                                             <div class="p-input-wrapper">
                                                 <i class="fas fa-envelope input-icon"></i>
-                                                <input type="email" name="email" id="edit_email" class="p-input with-icon" required placeholder="email@domain.com">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- Card: Identitas Akademik --}}
-                                <div class="edit-section-block shadow-sm border-0">
-                                    <div class="edit-section-title">
-                                        <i class="fas fa-university"></i> Identitas Akademik
-                                    </div>
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <label class="edit-field-label">NISN Siswa <span class="req">*</span></label>
-                                            <div class="p-input-wrapper">
-                                                <i class="fas fa-id-card input-icon"></i>
-                                                <input type="text" name="nisn" id="edit_nisn" class="p-input with-icon" required>
+                                                <input type="email" name="email" id="edit_email" class="p-input with-icon" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="edit-field-label">Tahun Ajaran</label>
+                                            <label class="edit-field-label">No. WhatsApp</label>
                                             <div class="p-input-wrapper">
-                                                <i class="fas fa-calendar-check input-icon"></i>
-                                                <select name="id_tahun_ajaran" id="edit_id_tahun_ajaran" class="p-input with-icon">
-                                                    @foreach($periodeOptions as $p)
-                                                        <option value="{{ $p->id_tahun_ajaran }}">{{ $p->tahun_ajaran }}</option>
-                                                    @endforeach
-                                                </select>
+                                                <i class="fab fa-whatsapp input-icon"></i>
+                                                <input type="text" name="no_hp" id="edit_hp" class="p-input with-icon" placeholder="08xxxxxxxxxx">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label class="edit-field-label">Kelas <span class="req">*</span></label>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">Ganti Sandi (Opsional)</label>
                                             <div class="p-input-wrapper">
-                                                <i class="fas fa-chalkboard input-icon"></i>
-                                                <input type="text" name="kelas" id="edit_kelas" class="p-input with-icon" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <label class="edit-field-label">Program Keahlian <span class="req">*</span></label>
-                                            <div class="p-input-wrapper">
-                                                <i class="fas fa-book-open input-icon"></i>
-                                                <input type="text" name="jurusan" id="edit_jurusan" class="p-input with-icon" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <label class="edit-field-label">Asal Lembaga Sekolah <span class="req">*</span></label>
-                                            <div class="p-input-wrapper">
-                                                <i class="fas fa-school input-icon"></i>
-                                                <input type="text" name="sekolah" id="edit_sekolah" class="p-input with-icon" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <label class="edit-field-label">NPSN Sekolah</label>
-                                            <div class="p-input-wrapper">
-                                                <i class="fas fa-fingerprint input-icon"></i>
-                                                <input type="text" name="npsn" id="edit_npsn" class="p-input with-icon">
+                                                <i class="fas fa-key input-icon"></i>
+                                                <div class="custom-pw-group">
+                                                    <input type="password" name="password" class="p-input with-icon" placeholder="Isi jika diubah">
+                                                    <button class="btn border-0 toggle-password pw-toggle-btn text-muted" type="button" tabindex="-1">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -334,24 +301,44 @@
                             </div>
                         </div>
 
-                        {{-- ══ KOLOM KANAN: PENEMPATAN & KEAMANAN ══════════════ --}}
-                        <div class="col-md-6">
+                        {{-- ══ KOLOM KANAN: AKADEMIK & MAGANG ════════════════ --}}
+                        <div class="col-lg-6">
                             <div class="d-flex flex-column gap-4">
 
-                                {{-- Card: Penempatan & Tipe --}}
+                                {{-- Card: Identitas Akademik & Magang --}}
                                 <div class="edit-section-block shadow-sm border-0">
                                     <div class="edit-section-title">
-                                        <i class="fas fa-map-location-dot"></i> Penempatan & Tipe
+                                        <i class="fas fa-graduation-cap"></i> Identitas Akademik & Magang
                                     </div>
                                     <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <label class="edit-field-label">Lokasi Penempatan</label>
+                                        <div class="col-12">
+                                            <label class="edit-field-label">Asal Lembaga Sekolah <span class="req">*</span></label>
                                             <div class="p-input-wrapper">
-                                                <i class="fas fa-building-circle-check input-icon"></i>
-                                                <select name="perusahaan" id="edit_perusahaan" class="p-input with-icon">
-                                                    <option value="">-- Pilih Lokasi --</option>
-                                                    @foreach($lokasis as $lok)
-                                                        <option value="{{ $lok->nama_lokasi }}">{{ $lok->nama_lokasi }}</option>
+                                                <i class="fas fa-school input-icon"></i>
+                                                <input type="text" name="sekolah" id="edit_sekolah" class="p-input with-icon" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="edit-field-label">Kelas <span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-chalkboard-user input-icon"></i>
+                                                <input type="text" name="kelas" id="edit_kelas" class="p-input with-icon" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="edit-field-label">Jurusan <span class="req">*</span></label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-book-open input-icon"></i>
+                                                <input type="text" name="jurusan" id="edit_jurusan" class="p-input with-icon" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">Tahun Ajaran</label>
+                                            <div class="p-input-wrapper">
+                                                <i class="fas fa-calendar-alt input-icon"></i>
+                                                <select name="id_tahun_ajaran" id="edit_id_tahun_ajaran" class="p-input with-icon">
+                                                    @foreach($periodeOptions as $p)
+                                                        <option value="{{ $p->id_tahun_ajaran }}">{{ $p->label_periode }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -366,49 +353,15 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-md-6">
                                             <label class="edit-field-label">NISN Ketua (Grup)</label>
                                             <div class="p-input-wrapper">
                                                 <i class="fas fa-user-shield input-icon"></i>
-                                                <input type="text" name="nisn_ketua" id="edit_nisn_ketua" class="p-input with-icon" placeholder="Hanya isi jika Grup">
+                                                <input type="text" name="nisn_ketua" id="edit_nisn_ketua" class="p-input with-icon" placeholder="Hanya jika Grup">
                                             </div>
                                         </div>
-                                        <div class="col-12">
-                                            <label class="edit-field-label">Surat Balasan (Format PDF/JPG, Max 2MB)</label>
-                                            <div class="p-input-wrapper">
-                                                <i class="fas fa-file-pdf input-icon"></i>
-                                                <input type="file" name="surat_balasan" id="edit_surat_balasan_input" class="p-input with-icon" accept=".pdf,.jpg,.jpeg,.png">
-                                            </div>
-                                            <small class="text-muted mt-1 d-block" id="edit_surat_balasan_info">Biarkan kosong jika tidak ingin mengubah file.</small>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="edit-field-label">Tgl. Mulai</label>
-                                            <div class="p-input-wrapper">
-                                                <i class="fas fa-calendar-day input-icon"></i>
-                                                <input type="date" name="tgl_mulai_magang" id="edit_tgl_mulai" class="p-input with-icon">
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="edit-field-label">Tgl. Selesai</label>
-                                            <div class="p-input-wrapper">
-                                                <i class="fas fa-calendar-check input-icon"></i>
-                                                <input type="date" name="tgl_selesai_magang" id="edit_tgl_selesai" class="p-input with-icon">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <label class="edit-field-label">Guru Pembimbing</label>
-                                            <div class="p-input-wrapper">
-                                                <i class="fas fa-graduation-cap input-icon"></i>
-                                                <select name="id_guru" id="edit_id_guru" class="p-input with-icon">
-                                                    <option value="">-- Pilih Guru --</option>
-                                                    @foreach($gurus as $g)
-                                                        <option value="{{ $g->id_guru }}">{{ $g->nama }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <label class="edit-field-label">Pembimbing Lapangan</label>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">Pembimbing Lapangan (BPS)</label>
                                             <div class="p-input-wrapper">
                                                 <i class="fas fa-user-tie input-icon"></i>
                                                 <select name="id_pembimbing" id="edit_id_pembimbing" class="p-input with-icon">
@@ -419,23 +372,16 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-
-                                {{-- Card: Keamanan --}}
-                                <div class="edit-section-block shadow-sm border-0">
-                                    <div class="edit-section-title">
-                                        <i class="fas fa-shield-halved"></i> Keamanan Akun
-                                    </div>
-                                    <div class="row g-3">
-                                        <div class="col-12">
-                                            <label class="edit-field-label">Ganti Sandi (Opsional)</label>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">Tgl. Mulai</label>
                                             <div class="p-input-wrapper">
-                                                <i class="fas fa-key input-icon"></i>
-                                                <div class="input-group">
-                                                    <input type="password" name="password" class="p-input with-icon" placeholder="Isi jika ingin diubah">
-                                                    <button class="btn btn-outline-secondary toggle-password border-0" type="button"><i class="fas fa-eye"></i></button>
-                                                </div>
+                                                <input type="date" name="tgl_mulai_magang" id="edit_tgl_mulai" class="p-input">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="edit-field-label">Tgl. Selesai</label>
+                                            <div class="p-input-wrapper">
+                                                <input type="date" name="tgl_selesai_magang" id="edit_tgl_selesai" class="p-input">
                                             </div>
                                         </div>
                                     </div>
@@ -443,6 +389,7 @@
 
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -532,10 +479,7 @@
                                         <label class="detail-label">Lembaga Pendidikan Asal</label>
                                         <span class="detail-value" id="det_sekolah">-</span>
                                     </div>
-                                    <div class="col-12 detail-grid-item">
-                                        <label class="detail-label">NPSN Sekolah</label>
-                                        <span class="detail-value" id="det_npsn">-</span>
-                                    </div>
+                                    
                                 </div>
                             </div>
 
@@ -568,15 +512,7 @@
                                         <label class="detail-label">Durasi Waktu Magang</label>
                                         <span class="detail-value" id="det_periode">-</span>
                                     </div>
-                                    <div class="col-12 detail-grid-item">
-                                        <label class="detail-label">Surat Balasan / Referensi</label>
-                                        <div id="det_surat_balasan_wrapper" class="mt-1 d-flex align-items-center gap-3">
-                                            <span class="detail-value text-muted italic" id="det_surat_balasan">Belum diunggah</span>
-                                            <button class="btn btn-sm btn-primary-soft rounded-pill d-none" id="btn_view_surat">
-                                                <i class="fas fa-file-invoice me-1"></i> Preview
-                                            </button>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </div>
 
@@ -586,24 +522,7 @@
                                     <i class="fas fa-user-shield"></i> Tim Pembimbing Resmi
                                 </div>
                                 <div class="d-flex flex-column gap-3">
-                                    {{-- Guru --}}
-                                    <div class="p-3 rounded-4 border bg-white shadow-sm hover-elevate">
-                                        <div class="d-flex align-items-center gap-3 mb-3">
-                                            <div class="icon-box-small bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
-                                                <i class="fas fa-chalkboard-teacher"></i>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <div class="text-uppercase fw-bold text-primary" style="font-size: 0.65rem; letter-spacing: 1px;">Pembimbing Sekolah</div>
-                                                <h6 class="mb-0 fw-bold text-dark" id="det_guru_nama">-</h6>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                                            <div class="small text-muted"><i class="fas fa-id-card me-1"></i> <span id="det_guru_nip">-</span></div>
-                                            <a href="#" id="det_guru_wa_btn" class="btn btn-xs btn-success rounded-pill px-3 py-1 fw-bold" style="font-size: 0.7rem;">
-                                                <i class="fab fa-whatsapp me-1"></i> Chat Guru
-                                            </a>
-                                        </div>
-                                    </div>
+
                                     {{-- PL --}}
                                     <div class="p-3 rounded-4 border bg-white shadow-sm hover-elevate">
                                         <div class="d-flex align-items-center gap-3 mb-3">
@@ -687,7 +606,7 @@
                 <div class="modal-body p-4">
                     <div class="mb-3">
                         <label class="form-label fw-bold small text-muted text-uppercase">Nama Lokasi</label>
-                        <input type="text" name="nama_lokasi" class="form-control rounded-pill px-3" required placeholder="Contoh: Fasilkom Kampus Palembang">
+                        <input type="text" name="nama_lokasi" class="form-control rounded-pill px-3" required placeholder="Contoh: Kantor BPS Kabupaten Muara Enim">
                     </div>
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -833,5 +752,6 @@
             </div>
         </div>
     </div>
+</div>
 
 

@@ -13,11 +13,11 @@
         data-jurnal-url="{{ route('admin.rekap.jurnal', ['nisn' => ':nisn']) }}"
         data-absensi-url="{{ route('admin.rekap.absensi', ['nisn' => ':nisn']) }}"
         data-kelompok-url="{{ route('admin.rekap.kelompok', ['nisn' => ':nisn']) }}"
-        data-nilai-guru-url="{{ route('admin.rekap.nilaiGuru', ['nisn' => ':nisn']) }}"
+        
         data-nilai-pembimbing-url="{{ route('admin.rekap.nilaiPembimbing', ['nisn' => ':nisn']) }}"
         data-laporan-akhir-url="{{ route('admin.rekap.laporanAkhir', ['nisn' => ':nisn']) }}"
         data-sertifikat-url="{{ route('admin.rekap.sertifikat', ['nisn' => ':nisn']) }}"
-        data-asset-loader="{{ asset('images/unsri-pride.png') }}">
+        data-asset-loader="{{ asset('images/loogo.png') }}">
 
         <!-- Global Navigation Tabs: Siswa, Guru, Pembimbing -->
         <div class="tabs-wrapper border-0 bg-transparent mb-4">
@@ -27,11 +27,7 @@
                     <i class="fas fa-users"></i>
                     <span>Siswa</span>
                 </a>
-                <a href="{{ route('admin.kelolaGuru') }}"
-                    class="tab-button text-decoration-none flex-fill justify-content-center text-center {{ Route::is('admin.kelolaGuru') ? 'active' : '' }}">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                    <span>Guru</span>
-                </a>
+                
                 <a href="{{ route('admin.kelolaPembimbing') }}"
                     class="tab-button text-decoration-none flex-fill justify-content-center text-center {{ Route::is('admin.kelolaPembimbing') ? 'active' : '' }}">
                     <i class="fas fa-user-tie"></i>
@@ -155,8 +151,6 @@
                                                 data-tahun_ajaran="{{ $g['leader']->tahunAjaran->tahun_ajaran ?? '-' }}"
                                                 data-mulai="{{ $g['leader']->tgl_mulai_magang ? \Carbon\Carbon::parse($g['leader']->tgl_mulai_magang)->format('d M Y') : '-' }}"
                                                 data-selesai="{{ $g['leader']->tgl_selesai_magang ? \Carbon\Carbon::parse($g['leader']->tgl_selesai_magang)->format('d M Y') : '-' }}"
-                                                data-guru-nama="{{ $g['leader']->guru->nama ?? '-' }}"
-                                                data-guru-nip="{{ $g['leader']->guru->id_guru ?? '-' }}"
                                                 data-pl-nama="{{ $g['leader']->pembimbing->nama ?? '-' }}"
                                                 data-pl-nip="{{ $g['leader']->pembimbing->id_pembimbing ?? '-' }}"
                                                 data-pl-hp="{{ $g['leader']->pembimbing->no_telp ?? '-' }}"
@@ -210,10 +204,7 @@
                                                     <span class="status-dot belum"></span> Belum Absen
                                                 </span>
                                             @endif
-                                            <span class="card-guru-info">
-                                                <i class="fas fa-chalkboard-teacher me-1"></i>
-                                                {{ Str::limit($g['leader']->guru->nama ?? '-', 15) }}
-                                            </span>
+                                            
                                         </div>
 
                                         <div class="action-grid">
@@ -304,9 +295,6 @@
                                                         data-tahun_ajaran="{{ $s->tahunAjaran->tahun_ajaran ?? '-' }}"
                                                         data-mulai="{{ $s->tgl_mulai_magang ? \Carbon\Carbon::parse($s->tgl_mulai_magang)->format('d M Y') : '-' }}"
                                                         data-selesai="{{ $s->tgl_selesai_magang ? \Carbon\Carbon::parse($s->tgl_selesai_magang)->format('d M Y') : '-' }}"
-                                                        data-guru-nama="{{ $s->guru->nama ?? '-' }}"
-                                                        data-guru-nip="{{ $s->guru->id_guru ?? '-' }}"
-                                                        data-guru-hp="{{ $s->guru->no_hp ?? '-' }}"
                                                         data-pl-nama="{{ $s->pembimbing->nama ?? '-' }}"
                                                         data-pl-nip="{{ $s->pembimbing->id_pembimbing ?? '-' }}"
                                                         data-pl-hp="{{ $s->pembimbing->no_telp ?? '-' }}"
@@ -328,7 +316,6 @@
                                                         data-tipe_magang="{{ $s->tipe_magang }}"
                                                         data-nisn_ketua="{{ $s->nisn_ketua }}"
                                                         data-surat_balasan="{{ $s->surat_balasan }}"
-                                                        data-guru-nip="{{ $s->id_guru }}"
                                                         data-pl-nip="{{ $s->id_pembimbing }}"
                                                         data-mulai_raw="{{ $s->tgl_mulai_magang ? \Carbon\Carbon::parse($s->tgl_mulai_magang)->format('Y-m-d') : '' }}"
                                                         data-selesai_raw="{{ $s->tgl_selesai_magang ? \Carbon\Carbon::parse($s->tgl_selesai_magang)->format('Y-m-d') : '' }}"
@@ -487,8 +474,6 @@
                                                     data-tahun_ajaran="{{ $g['leader']->tahunAjaran->tahun_ajaran ?? '-' }}"
                                                     data-mulai="{{ $g['leader']->tgl_mulai_magang ? \Carbon\Carbon::parse($g['leader']->tgl_mulai_magang)->format('d M Y') : '-' }}"
                                                     data-selesai="{{ $g['leader']->tgl_selesai_magang ? \Carbon\Carbon::parse($g['leader']->tgl_selesai_magang)->format('d M Y') : '-' }}"
-                                                    data-guru-nama="{{ $g['leader']->guru->nama ?? '-' }}"
-                                                    data-guru-nip="{{ $g['leader']->guru->id_guru ?? '-' }}"
                                                     data-pl-nama="{{ $g['leader']->pembimbing->nama ?? '-' }}"
                                                     data-pl-nip="{{ $g['leader']->pembimbing->id_pembimbing ?? '-' }}"
                                                     data-pl-hp="{{ $g['leader']->pembimbing->no_telp ?? '-' }}">
@@ -579,9 +564,6 @@
                                                             data-tahun_ajaran="{{ $rs->tahunAjaran->tahun_ajaran ?? '-' }}"
                                                             data-mulai="{{ $rs->tgl_mulai_magang ? \Carbon\Carbon::parse($rs->tgl_mulai_magang)->format('d M Y') : '-' }}"
                                                             data-selesai="{{ $rs->tgl_selesai_magang ? \Carbon\Carbon::parse($rs->tgl_selesai_magang)->format('d M Y') : '-' }}"
-                                                            data-guru-nama="{{ $rs->guru->nama ?? '-' }}"
-                                                            data-guru-nip="{{ $rs->guru->id_guru ?? '-' }}"
-                                                            data-guru-hp="{{ $rs->guru->no_hp ?? '-' }}"
                                                             data-pl-nama="{{ $rs->pembimbing->nama ?? '-' }}"
                                                             data-pl-nip="{{ $rs->pembimbing->id_pembimbing ?? '-' }}"
                                                             data-pl-hp="{{ $rs->pembimbing->no_telp ?? '-' }}"
@@ -600,11 +582,7 @@
                                                         </button>
                                                     </div>
                                                     <div class="action-group justify-content-end">
-                                                        <button class="btn-premium-circle btn-star-p btn-preview-pdf"
-                                                            data-url="{{ route('admin.rekap.nilaiGuru', $rs->nisn) }}"
-                                                            title="Penilaian Guru">
-                                                            <i class="fas fa-star"></i>
-                                                        </button>
+                                                        
                                                         <button class="btn-premium-circle btn-user-check-p btn-preview-pdf"
                                                             data-url="{{ route('admin.rekap.nilaiPembimbing', $rs->nisn) }}"
                                                             title="Penilaian Pembimbing">
@@ -754,7 +732,7 @@
                     <div id="pdfCanvasContainer">
                         <div id="pdfLoadingIndicator">
                             <div class="loader-logo-container">
-                                <img src="{{ asset('images/unsri-pride.png') }}" alt="UNSRI">
+                                <img src="{{ asset('images/loogo.png') }}" alt="BPS">
                             </div>
                             
                         </div>
@@ -764,7 +742,7 @@
                             <p>Gagal memuat file PDF.<br><small>Coba gunakan tombol Unduh.</small></p>
                         </div>
                     </div>
-                </div
+                </div>
             </div>
         </div>
     </div>
@@ -782,3 +760,4 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
 @endsection
+

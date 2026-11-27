@@ -143,4 +143,9 @@ class Siswa extends Authenticatable implements HasRole
     {
         return $this->belongsTo(Pembimbing::class, 'id_pembimbing', 'id_pembimbing');
     }
+
+    public function modulSiswas()
+    {
+        return $this->hasMany(ModulSiswa::class, 'nisn', 'nisn');
+    }
 }

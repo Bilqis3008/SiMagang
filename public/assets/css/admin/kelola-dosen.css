@@ -192,11 +192,14 @@ body.admin-page {
     border-radius: var(--p-radius-lg);
     border: 1px solid #e2e8f0;
     box-shadow: var(--p-shadow-sm);
-    overflow: hidden;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
 }
 
 .main-table {
     width: 100%;
+    min-width: 680px;
     border-collapse: separate;
     border-spacing: 0;
 }
@@ -607,42 +610,50 @@ body.admin-page {
 
     .btn-primary-custom {
         justify-content: center;
+        width: 100%;
+    }
+
+    .data-table-wrapper {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+    }
+
+    .main-table {
+        min-width: 680px !important;
     }
 
     .main-table thead {
-        display: none;
+        display: table-header-group !important;
     }
 
-    .main-table td {
-        display: block;
-        text-align: right;
-        padding: 0.75rem 1rem;
-        position: relative;
-        border-bottom: 1px solid #f1f5f9;
-    }
-
-    .main-table td:before {
-        content: attr(data-label);
-        position: absolute;
-        left: 1rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        font-size: 0.7rem;
-        color: var(--p-text-muted);
+    .main-table tbody {
+        display: table-row-group !important;
     }
 
     .main-table tr {
-        display: block;
-        background: #fff;
-        border: 1px solid #e2e8f0;
-        border-radius: var(--p-radius-lg);
-        margin-bottom: 1rem;
-        padding: 0.5rem;
-        box-shadow: var(--p-shadow-sm);
+        display: table-row !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+    }
+
+    .main-table td {
+        display: table-cell !important;
+        text-align: left !important;
+        padding: 1rem !important;
+        white-space: nowrap;
+    }
+
+    .main-table td:before {
+        display: none !important;
+        content: none !important;
     }
 
     .action-group {
-        justify-content: flex-end;
+        justify-content: flex-start;
     }
 }
 

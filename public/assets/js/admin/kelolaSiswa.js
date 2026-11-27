@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const jurnalUrlTemplate = containerEl.dataset.jurnalUrl;
     const absensiUrlTemplate = containerEl.dataset.absensiUrl;
     const kelompokUrlTemplate = containerEl.dataset.kelompokUrl;
-    const nilaiGuruUrlTemplate = containerEl.dataset.nilaiGuruUrl;
     const nilaiPembimbingUrlTemplate = containerEl.dataset.nilaiPembimbingUrl;
     const laporanAkhirUrlTemplate = containerEl.dataset.laporanAkhirUrl;
     const sertifikatUrlTemplate = containerEl.dataset.sertifikatUrl;
@@ -103,33 +102,37 @@ document.addEventListener('DOMContentLoaded', function() {
     const editForm = document.getElementById('formEditSiswa');
     document.querySelectorAll('.btn-edit').forEach(button => {
         button.addEventListener('click', function() {
-            editForm.action = `/admin/siswa/${this.dataset.id}`;
-            document.getElementById('edit_nama').value = this.dataset.nama;
-            document.getElementById('edit_email').value = this.dataset.email;
-            document.getElementById('edit_jk').value = this.dataset.jk || 'L';
-            document.getElementById('edit_nisn').value = this.dataset.id;
-            document.getElementById('edit_kelas').value = this.dataset.kelas;
-            document.getElementById('edit_jurusan').value = this.dataset.jurusan;
-            document.getElementById('edit_sekolah').value = this.dataset.sekolah;
-            document.getElementById('edit_npsn').value = this.dataset.npsn || '';
-            document.getElementById('edit_id_tahun_ajaran').value = this.dataset.id_tahun_ajaran || '';
-            document.getElementById('edit_perusahaan').value = this.dataset.perusahaan || '';
-            document.getElementById('edit_tipe_magang').value = this.dataset.tipe_magang || 'individu';
-            document.getElementById('edit_nisn_ketua').value = this.dataset.nisn_ketua || '';
+            if (editForm) editForm.action = `/admin/siswa/${this.dataset.id}`;
+            const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+            setVal('edit_nama', this.dataset.nama || '');
+            setVal('edit_email', this.dataset.email || '');
+            setVal('edit_jk', this.dataset.jk || 'L');
+            setVal('edit_nisn', this.dataset.id || '');
+            setVal('edit_kelas', this.dataset.kelas || '');
+            setVal('edit_jurusan', this.dataset.jurusan || '');
+            setVal('edit_sekolah', this.dataset.sekolah || '');
+            setVal('edit_npsn', this.dataset.npsn || '');
+            setVal('edit_id_tahun_ajaran', this.dataset.id_tahun_ajaran || '');
+            setVal('edit_perusahaan', this.dataset.perusahaan || 'BPS Kabupaten Muara Enim');
+            setVal('edit_tipe_magang', this.dataset.tipe_magang || 'individu');
+            setVal('edit_nisn_ketua', this.dataset.nisn_ketua || '');
             
-            document.getElementById('edit_surat_balasan_input').value = '';
+            const suratInput = document.getElementById('edit_surat_balasan_input');
+            if (suratInput) suratInput.value = '';
             const suratInfo = document.getElementById('edit_surat_balasan_info');
-            if (this.dataset.surat_balasan && this.dataset.surat_balasan !== 'null') {
-                suratInfo.innerHTML = `<i class="fas fa-file-check text-success"></i> File saat ini: <strong>${this.dataset.surat_balasan.split('/').pop()}</strong><br>Pilih file baru untuk mengganti.`;
-            } else {
-                suratInfo.textContent = "Belum ada file. Pilih file untuk mengunggah.";
+            if (suratInfo) {
+                if (this.dataset.surat_balasan && this.dataset.surat_balasan !== 'null') {
+                    suratInfo.innerHTML = `<i class="fas fa-file-check text-success"></i> File saat ini: <strong>${this.dataset.surat_balasan.split('/').pop()}</strong><br>Pilih file baru untuk mengganti.`;
+                } else {
+                    suratInfo.textContent = "Belum ada file. Pilih file untuk mengunggah.";
+                }
             }
 
-            document.getElementById('edit_id_guru').value = this.dataset.guruNip || '';
-            document.getElementById('edit_id_pembimbing').value = this.dataset.plNip || '';
-            document.getElementById('edit_tgl_mulai').value = this.dataset.mulai_raw || '';
-            document.getElementById('edit_tgl_selesai').value = this.dataset.selesai_raw || '';
-            document.getElementById('edit_hp').value = this.dataset.no_hp || '';
+            setVal('edit_id_guru', this.dataset.guruNip || '');
+            setVal('edit_id_pembimbing', this.dataset.plNip || '');
+            setVal('edit_tgl_mulai', this.dataset.mulai_raw || '');
+            setVal('edit_tgl_selesai', this.dataset.selesai_raw || '');
+            setVal('edit_hp', this.dataset.no_hp || '');
         });
     });
 
@@ -137,48 +140,55 @@ document.addEventListener('DOMContentLoaded', function() {
     function initDetailModalListeners() {
         document.querySelectorAll('.btn-detail').forEach(button => {
             button.onclick = function() {
-                document.getElementById('det_name').textContent = this.dataset.nama;
-                document.getElementById('det_nisn').textContent = this.dataset.nisn;
+                const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+                setText('det_name', this.dataset.nama || '-');
+                setText('det_nisn', this.dataset.nisn || '-');
                 const jkMap = { 'L': 'Laki-laki', 'P': 'Perempuan' };
-                document.getElementById('det_jk').textContent = jkMap[this.dataset.jk] || this.dataset.jk || '-';
-                document.getElementById('det_email').textContent = this.dataset.email;
-                document.getElementById('det_hp').textContent = this.dataset.no_hp || '-';
-                document.getElementById('det_kelas_jurusan').textContent = `${this.dataset.kelas} - ${this.dataset.jurusan}`;
-                document.getElementById('det_tahun_ajaran').textContent = this.dataset.tahun_ajaran || '-';
-                document.getElementById('det_sekolah').textContent = this.dataset.sekolah;
-                document.getElementById('det_npsn').textContent = this.dataset.npsn || '-';
-                document.getElementById('det_perusahaan').textContent = this.dataset.perusahaan || 'Belum ditugaskan';
-                document.getElementById('det_tipe_magang').textContent = (this.dataset.tipe_magang || 'Individu').toUpperCase();
-                document.getElementById('det_nisn_ketua').textContent = this.dataset.nisn_ketua || '-';
+                setText('det_jk', jkMap[this.dataset.jk] || this.dataset.jk || '-');
+                setText('det_email', this.dataset.email || '-');
+                setText('det_hp', this.dataset.no_hp || '-');
+                setText('det_kelas_jurusan', `${this.dataset.kelas || '-'} - ${this.dataset.jurusan || '-'}`);
+                setText('det_tahun_ajaran', this.dataset.tahun_ajaran || '-');
+                setText('det_sekolah', this.dataset.sekolah || '-');
+                setText('det_npsn', this.dataset.npsn || '-');
+                setText('det_perusahaan', this.dataset.perusahaan || 'BPS Kabupaten Muara Enim');
+                setText('det_tipe_magang', (this.dataset.tipe_magang || 'Individu').toUpperCase());
+                setText('det_nisn_ketua', this.dataset.nisn_ketua || '-');
 
                 const suratPath = this.dataset.surat_balasan;
                 const detSurat = document.getElementById('det_surat_balasan');
                 const btnViewSurat = document.getElementById('btn_view_surat');
 
-                if (suratPath && suratPath !== 'null' && suratPath !== '') {
-                    detSurat.textContent = 'File tersedia';
-                    detSurat.className = 'detail-value text-success fw-bold';
-                    btnViewSurat.classList.remove('d-none');
-                    btnViewSurat.onclick = function() {
-                        const url = `/storage/${suratPath}`;
-                        currentPdfUrl = url;
-                        const downloadBtn = document.getElementById('downloadPdfBtn');
-                        downloadBtn.href = url + '?download=1';
-                        if (pdfModal) pdfModal.show();
-                        renderPDF(url);
-                    };
-                } else {
-                    detSurat.textContent = 'Belum diunggah';
-                    detSurat.className = 'detail-value text-muted italic';
-                    btnViewSurat.classList.add('d-none');
+                if (detSurat) {
+                    if (suratPath && suratPath !== 'null' && suratPath !== '') {
+                        detSurat.textContent = 'File tersedia';
+                        detSurat.className = 'detail-value text-success fw-bold';
+                        if (btnViewSurat) {
+                            btnViewSurat.classList.remove('d-none');
+                            btnViewSurat.onclick = function() {
+                                const url = `/storage/${suratPath}`;
+                                currentPdfUrl = url;
+                                const downloadBtn = document.getElementById('downloadPdfBtn');
+                                if (downloadBtn) downloadBtn.href = url + '?download=1';
+                                if (pdfModal) pdfModal.show();
+                                renderPDF(url);
+                            };
+                        }
+                    } else {
+                        detSurat.textContent = 'Belum diunggah';
+                        detSurat.className = 'detail-value text-muted italic';
+                        if (btnViewSurat) btnViewSurat.classList.add('d-none');
+                    }
                 }
 
                 const mulai = this.dataset.mulai;
                 const selesai = this.dataset.selesai;
                 document.getElementById('det_periode').textContent = (mulai && selesai && mulai !== '-') ? `${mulai} s/d ${selesai}` : 'Belum ditentukan';
 
-                document.getElementById('det_guru_nama').textContent = this.dataset.guruNama || '-';
-                document.getElementById('det_guru_nip').textContent = this.dataset.guruNip || '-';
+                const detGuruNama = document.getElementById('det_guru_nama');
+                if (detGuruNama) detGuruNama.textContent = this.dataset.guruNama || '-';
+                const detGuruNip = document.getElementById('det_guru_nip');
+                if (detGuruNip) detGuruNip.textContent = this.dataset.guruNip || '-';
                 
                 const guruHp = this.dataset.guruHp || '';
                 const guruWaBtn = document.getElementById('det_guru_wa_btn');
@@ -186,11 +196,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     let cleaned = num.replace(/\D/g, '');
                     return cleaned.startsWith('0') ? '62' + cleaned.substring(1) : cleaned;
                 };
-                if (guruHp && guruHp !== '-') {
-                    guruWaBtn.href = `https://wa.me/${formatWa(guruHp)}`;
-                    guruWaBtn.classList.remove('d-none');
-                } else {
-                    guruWaBtn.classList.add('d-none');
+                if (guruWaBtn) {
+                    if (guruHp && guruHp !== '-') {
+                        guruWaBtn.href = `https://wa.me/${formatWa(guruHp)}`;
+                        guruWaBtn.classList.remove('d-none');
+                    } else {
+                        guruWaBtn.classList.add('d-none');
+                    }
                 }
 
                 document.getElementById('det_pl_nama').textContent = this.dataset.plNama || '-';
@@ -307,10 +319,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <button class="btn-premium-circle btn-jurnal-p btn-preview-pdf" title="Cetak Jurnal" data-url="${jurnalUrlTemplate.replace(':nisn', member.nisn)}"
                                             style="width: 38px; height: 38px; font-size: 1rem;">
                                             <i class="fas fa-book-open"></i>
-                                        </button>
-                                        <button class="btn-premium-circle btn-star-p btn-preview-pdf" title="Penilaian Guru" data-url="${nilaiGuruUrlTemplate.replace(':nisn', member.nisn)}"
-                                            style="width: 38px; height: 38px; font-size: 1rem;">
-                                            <i class="fas fa-star"></i>
                                         </button>
                                         <button class="btn-premium-circle btn-user-check-p btn-preview-pdf" title="Penilaian Pembimbing" data-url="${nilaiPembimbingUrlTemplate.replace(':nisn', member.nisn)}"
                                             style="width: 38px; height: 38px; font-size: 1rem;">
@@ -450,7 +458,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // ── Password Toggle Logic ──────────────────────────────────────
     document.querySelectorAll('.toggle-password').forEach(btn => {
         btn.addEventListener('click', function() {
-            const input = this.closest('.input-group').querySelector('input');
+            const wrapper = this.closest('.custom-pw-group') || this.closest('.input-group') || this.closest('.p-input-wrapper');
+            const input = wrapper ? wrapper.querySelector('input') : null;
+            if (!input) return;
             const icon = this.querySelector('i');
             if (input.type === 'password') {
                 input.type = 'text';

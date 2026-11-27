@@ -391,10 +391,33 @@
 
 
 /* Responsiveness */
+@media (max-width: 991.98px) {
+    .admin-content-wrapper {
+        padding: 1rem 0.75rem !important;
+    }
+
+    .rekap-main-card {
+        padding: 1.25rem !important;
+    }
+
+    .rekap-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 1.5rem !important;
+    }
+
+    .filter-box {
+        width: 100% !important;
+    }
+
+    .filter-box select {
+        width: 100% !important;
+    }
+}
+
 @media (max-width: 768px) {
     .rekap-header {
         padding: 1.25rem;
-        text-align: center;
     }
 
     .rekap-tabs-nav {

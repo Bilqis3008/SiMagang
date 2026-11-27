@@ -15,17 +15,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Edit Periode Modal
-    document.querySelectorAll('.btn-edit-periode').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            document.getElementById('formEditPeriode').action = `/admin/periode/${id}`;
-            document.getElementById('edit_ta_tahun').value = this.getAttribute('data-tahun');
-            document.getElementById('edit_ta_mulai').value = this.getAttribute('data-mulai');
-            document.getElementById('edit_ta_selesai').value = this.getAttribute('data-selesai');
-            document.getElementById('edit_ta_status').value = this.getAttribute('data-status');
+    // Edit Periode Modal (Safely guarded)
+    const formEditPeriode = document.getElementById('formEditPeriode');
+    if (formEditPeriode) {
+        document.querySelectorAll('.btn-edit-periode').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                formEditPeriode.action = `/admin/periode/${id}`;
+                const elTahun = document.getElementById('edit_ta_tahun');
+                if (elTahun) elTahun.value = this.getAttribute('data-tahun');
+                const elMulai = document.getElementById('edit_ta_mulai');
+                if (elMulai) elMulai.value = this.getAttribute('data-mulai');
+                const elSelesai = document.getElementById('edit_ta_selesai');
+                if (elSelesai) elSelesai.value = this.getAttribute('data-selesai');
+                const elStatus = document.getElementById('edit_ta_status');
+                if (elStatus) elStatus.value = this.getAttribute('data-status');
+            });
         });
-    });
+    }
 
     // Edit Prodi Modal
     document.querySelectorAll('.btn-edit-prodi').forEach(btn => {

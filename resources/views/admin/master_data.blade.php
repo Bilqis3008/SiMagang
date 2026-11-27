@@ -30,17 +30,7 @@
             <div class="tabs-wrapper mb-4">
                 <div class="tabs-nav d-flex w-100 gap-2 p-1"
                     style="background: rgba(15, 23, 42, 0.03); border-radius: 16px;" role="tablist">
-                    <button class="tab-button active flex-fill justify-content-center" id="sekolah-tab" data-bs-toggle="pill"
-                        data-bs-target="#pane-sekolah" type="button" role="tab" style="border-radius: 12px;">
-                        <i class="fas fa-school"></i>
-                        <span>Master Sekolah</span>
-                    </button>
-                    <button class="tab-button flex-fill justify-content-center" id="periode-tab" data-bs-toggle="pill"
-                        data-bs-target="#pane-periode" type="button" role="tab" style="border-radius: 12px;">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Tahun Ajaran</span>
-                    </button>
-                    <button class="tab-button flex-fill justify-content-center" id="informasi-tab" data-bs-toggle="pill"
+                    <button class="tab-button active flex-fill justify-content-center" id="informasi-tab" data-bs-toggle="pill"
                         data-bs-target="#pane-informasi" type="button" role="tab" style="border-radius: 12px;">
                         <i class="fas fa-info-circle"></i>
                         <span>Informasi Dashboard</span>
@@ -54,134 +44,8 @@
             </div>
 
             <div class="tab-content" id="masterDataTabsContent">
-                {{-- TAB SEKOLAH --}}
-                <div class="tab-pane fade show active" id="pane-sekolah" role="tabpanel">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="fw-bold mb-0">Daftar Sekolah Terdaftar</h6>
-                        <button class="btn btn-primary px-4 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambahSekolah">
-                            <i class="fas fa-plus me-2"></i> Tambah Sekolah
-                        </button>
-                    </div>
-
-                    <div class="data-table-wrapper">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="bg-light">
-                                <tr>
-                                    <th class="ps-4">NPSN</th>
-                                    <th>Nama Sekolah</th>
-                                    <th>Jenjang</th>
-                                    <th>Status</th>
-                                    <th>Alamat</th>
-                                    <th class="text-end pe-4">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($sekolahs as $s)
-                                    <tr>
-                                        <td class="ps-4 fw-bold text-primary">{{ $s->npsn }}</td>
-                                        <td>{{ $s->nama_sekolah }}</td>
-                                        <td><span class="badge bg-info-subtle text-info px-3">{{ $s->jenjang }}</span></td>
-                                        <td>
-                                            @if($s->status == 'Negeri')
-                                                <span class="badge bg-success-subtle text-success px-3">Negeri</span>
-                                            @else
-                                                <span class="badge bg-warning-subtle text-warning px-3">Swasta</span>
-                                            @endif
-                                        </td>
-                                        <td class="text-muted small">{{ Str::limit($s->alamat, 50) }}</td>
-                                        <td class="text-end pe-4">
-                                            <button class="btn btn-sm btn-light text-primary border-0 rounded-circle btn-edit-sekolah" 
-                                                data-bs-toggle="modal" data-bs-target="#modalEditSekolah"
-                                                data-id="{{ $s->id_sekolah }}"
-                                                data-npsn="{{ $s->npsn }}"
-                                                data-nama="{{ $s->nama_sekolah }}"
-                                                data-jenjang="{{ $s->jenjang }}"
-                                                data-status="{{ $s->status }}"
-                                                data-alamat="{{ $s->alamat }}">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <form action="{{ route('admin.destroySekolah', $s->id_sekolah) }}" method="POST" class="d-inline">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-light text-danger border-0 rounded-circle" onclick="return confirm('Hapus sekolah ini?')">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center py-5 text-muted">Belum ada data sekolah.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                {{-- TAB PERIODE --}}
-                <div class="tab-pane fade" id="pane-periode" role="tabpanel">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="fw-bold mb-0">Daftar Tahun Ajaran</h6>
-                        <button class="btn btn-primary px-4 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambahPeriode">
-                            <i class="fas fa-plus me-2"></i> Tambah Periode
-                        </button>
-                    </div>
-
-                    <div class="data-table-wrapper">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="bg-light">
-                                <tr>
-                                    <th class="ps-4">Tahun Ajaran</th>
-                                    <th>Tanggal Mulai</th>
-                                    <th>Tanggal Selesai</th>
-                                    <th>Status</th>
-                                    <th class="text-end pe-4">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($tahunAjarans as $ta)
-                                    <tr>
-                                        <td class="ps-4 fw-bold">{{ $ta->tahun_ajaran }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($ta->tgl_mulai)->format('d M Y') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($ta->tgl_selesai)->format('d M Y') }}</td>
-                                        <td>
-                                            @if($ta->status == 'aktif')
-                                                <span class="badge bg-success px-3">Aktif</span>
-                                            @else
-                                                <span class="badge bg-secondary px-3">Tidak Aktif</span>
-                                            @endif
-                                        </td>
-                                        <td class="text-end pe-4">
-                                            <button class="btn btn-sm btn-light text-primary border-0 rounded-circle btn-edit-periode"
-                                                data-bs-toggle="modal" data-bs-target="#modalEditPeriode"
-                                                data-id="{{ $ta->id_tahun_ajaran }}"
-                                                data-tahun="{{ $ta->tahun_ajaran }}"
-                                                data-mulai="{{ $ta->tgl_mulai }}"
-                                                data-selesai="{{ $ta->tgl_selesai }}"
-                                                data-status="{{ $ta->status }}">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <form action="{{ route('admin.destroyPeriode', $ta->id_tahun_ajaran) }}" method="POST" class="d-inline">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-light text-danger border-0 rounded-circle" onclick="return confirm('Hapus periode ini?')">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center py-5 text-muted">Belum ada data periode.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            <!-- REMOVED PREMATURE CLOSING DIV HERE -->
-
                 {{-- TAB INFORMASI DASHBOARD --}}
-                <div class="tab-pane fade" id="pane-informasi" role="tabpanel">
+                <div class="tab-pane fade show active" id="pane-informasi" role="tabpanel">
                     <div class="row g-4">
                         <!-- Form Informasi Dashboard -->
                         <div class="col-lg-7">
@@ -296,17 +160,17 @@
                             </div>
                         </div>
 
-                        <!-- Kelola Program Studi -->
+                        <!-- Kelola Divisi -->
                         <div class="col-lg-5">
                             <div class="card border-0 shadow-sm rounded-4 h-100">
                                 <div class="card-body p-4">
                                     <div class="d-flex justify-content-between align-items-center mb-4">
                                         <h6 class="info-section-title mb-0">
-                                            <i><i class="fas fa-graduation-cap"></i></i>
-                                            Program Studi
+                                            <i><i class="fas fa-sitemap"></i></i>
+                                            Divisi
                                         </h6>
                                         <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambahProdi">
-                                            <i class="fas fa-plus me-1"></i> Tambah
+                                            <i class="fas fa-plus me-1"></i> Tambah Divisi
                                         </button>
                                     </div>
 
@@ -318,7 +182,7 @@
                                                     <div>
                                                         <div class="prodi-name">{{ $prodi->nama }}</div>
                                                         <div class="prodi-meta">
-                                                            <span class="text-primary fw-bold">{{ $prodi->jenjang }}</span>
+                                                            <span class="text-primary fw-bold">{{ $prodi->jenjang ?: 'Divisi' }}</span>
                                                             <span class="mx-2 text-muted">|</span>
                                                             <span>Urutan: {{ $prodi->urutan }}</span>
                                                         </div>
@@ -349,7 +213,7 @@
                                                             <li>
                                                                 <form action="{{ route('admin.destroyProdi', $prodi->id) }}" method="POST" class="d-inline">
                                                                     @csrf @method('DELETE')
-                                                                    <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Hapus program studi ini?')">
+                                                                    <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Hapus divisi ini?')">
                                                                         <i class="fas fa-trash-alt me-2"></i> Hapus
                                                                     </button>
                                                                 </form>
@@ -361,7 +225,7 @@
                                         @empty
                                             <div class="text-center py-5">
                                                 <img src="{{ asset('assets/images/empty-state.png') }}" class="mb-3" style="width: 120px; opacity: 0.5;">
-                                                <p class="text-muted">Data program studi tidak ditemukan.</p>
+                                                <p class="text-muted">Data divisi belum ditambahkan.</p>
                                             </div>
                                         @endforelse
                                     </div>
@@ -458,10 +322,23 @@
                                                             <input type="text" name="konfigurasi[{{ $index }}][header_2]" class="form-control input-premium" value="{{ $lap->header_2 }}" placeholder="Contoh: DIBERIKAN KEPADA :">
                                                         </div>
                                                         <div class="mb-3">
+                                                            <label class="label-premium">Nilai / Predikat Kelulusan</label>
+                                                            <select name="konfigurasi[{{ $index }}][predikat_nilai]" class="form-select input-premium">
+                                                                <option value="">-- Pilih Nilai / Predikat --</option>
+                                                                <option value="A — Sangat Baik" {{ ($lap->predikat_nilai == 'A — Sangat Baik') ? 'selected' : '' }}>A — Sangat Baik</option>
+                                                                <option value="B — Baik" {{ ($lap->predikat_nilai == 'B — Baik') ? 'selected' : '' }}>B — Baik</option>
+                                                                <option value="C — Cukup" {{ ($lap->predikat_nilai == 'C — Cukup') ? 'selected' : '' }}>C — Cukup</option>
+                                                                <option value="D — Kurang" {{ ($lap->predikat_nilai == 'D — Kurang') ? 'selected' : '' }}>D — Kurang</option>
+                                                            </select>
+                                                            <small class="text-muted mt-1 d-block">
+                                                                Pilih predikat nilai sertifikat (misal: <strong>A — Sangat Baik</strong>). Tersedia juga placeholder <strong>{predikat}</strong> dalam kalimat isi.
+                                                            </small>
+                                                        </div>
+                                                        <div class="mb-3">
                                                             <label class="label-premium">Template Kalimat Isi</label>
                                                             <textarea name="konfigurasi[{{ $index }}][template_isi]" class="form-control input-premium" rows="6">{{ $lap->template_isi }}</textarea>
                                                             <small class="text-muted mt-1 d-block">
-                                                                Dapat menggunakan <strong>{tgl_mulai}</strong> dan <strong>{tgl_selesai}</strong>.
+                                                                Dapat menggunakan <strong>{tgl_mulai}</strong>, <strong>{tgl_selesai}</strong>, dan <strong>{predikat}</strong>.
                                                             </small>
                                                         </div>
                                                     </div>
@@ -529,211 +406,26 @@
     </div>
 
     {{-- MODALS --}}
-    <!-- Modal Tambah Sekolah -->
-    <div class="modal fade" id="modalTambahSekolah" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
-                <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold">Tambah Sekolah Baru</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ route('admin.storeSekolah') }}" method="POST">
-                    @csrf
-                    <div class="modal-body p-4">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">NPSN</label>
-                            <input type="text" name="npsn" class="form-control rounded-3" placeholder="Masukkan 8 digit NPSN" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Nama Sekolah</label>
-                            <input type="text" name="nama_sekolah" class="form-control rounded-3" placeholder="Contoh: SMK Negeri 1 Palembang" required>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Jenjang</label>
-                                <select name="jenjang" class="form-select rounded-3" required>
-                                    <option value="SMK">SMK</option>
-                                    <option value="SMA">SMA</option>
-                                    <option value="MA">MA</option>
-                                    <option value="Lainnya">Lainnya</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Status</label>
-                                <select name="status" class="form-select rounded-3" required>
-                                    <option value="Negeri">Negeri</option>
-                                    <option value="Swasta">Swasta</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-0">
-                            <label class="form-label fw-semibold">Alamat</label>
-                            <textarea name="alamat" class="form-control rounded-3" rows="3" placeholder="Alamat lengkap sekolah"></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer border-0 pt-0">
-                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary rounded-pill px-4">Simpan Sekolah</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Edit Sekolah -->
-    <div class="modal fade" id="modalEditSekolah" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
-                <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold">Edit Data Sekolah</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="formEditSekolah" method="POST">
-                    @csrf @method('PUT')
-                    <div class="modal-body p-4">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">NPSN</label>
-                            <input type="text" name="npsn" id="edit_sekolah_npsn" class="form-control rounded-3" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Nama Sekolah</label>
-                            <input type="text" name="nama_sekolah" id="edit_sekolah_nama" class="form-control rounded-3" required>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Jenjang</label>
-                                <select name="jenjang" id="edit_sekolah_jenjang" class="form-select rounded-3" required>
-                                    <option value="SMK">SMK</option>
-                                    <option value="SMA">SMA</option>
-                                    <option value="MA">MA</option>
-                                    <option value="Lainnya">Lainnya</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Status</label>
-                                <select name="status" id="edit_sekolah_status" class="form-select rounded-3" required>
-                                    <option value="Negeri">Negeri</option>
-                                    <option value="Swasta">Swasta</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-0">
-                            <label class="form-label fw-semibold">Alamat</label>
-                            <textarea name="alamat" id="edit_sekolah_alamat" class="form-control rounded-3" rows="3"></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer border-0 pt-0">
-                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary rounded-pill px-4">Update Sekolah</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Tambah Periode -->
-    <div class="modal fade" id="modalTambahPeriode" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
-                <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold">Tambah Tahun Ajaran</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ route('admin.storePeriode') }}" method="POST">
-                    @csrf
-                    <div class="modal-body p-4">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Tahun Ajaran</label>
-                            <input type="text" name="tahun_ajaran" class="form-control rounded-3" placeholder="Contoh: 2023/2024" required>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Tanggal Mulai</label>
-                                <input type="date" name="tgl_mulai" class="form-control rounded-3" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Tanggal Selesai</label>
-                                <input type="date" name="tgl_selesai" class="form-control rounded-3" required>
-                            </div>
-                        </div>
-                        <div class="mb-0">
-                            <label class="form-label fw-semibold">Status</label>
-                            <select name="status" class="form-select rounded-3" required>
-                                <option value="aktif">Aktif</option>
-                                <option value="tidak aktif">Tidak Aktif</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer border-0 pt-0">
-                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary rounded-pill px-4">Simpan Periode</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Edit Periode -->
-    <div class="modal fade" id="modalEditPeriode" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
-                <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold">Edit Tahun Ajaran</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="formEditPeriode" method="POST">
-                    @csrf @method('PUT')
-                    <div class="modal-body p-4">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Tahun Ajaran</label>
-                            <input type="text" name="tahun_ajaran" id="edit_ta_tahun" class="form-control rounded-3" required>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Tanggal Mulai</label>
-                                <input type="date" name="tgl_mulai" id="edit_ta_mulai" class="form-control rounded-3" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Tanggal Selesai</label>
-                                <input type="date" name="tgl_selesai" id="edit_ta_selesai" class="form-control rounded-3" required>
-                            </div>
-                        </div>
-                        <div class="mb-0">
-                            <label class="form-label fw-semibold">Status</label>
-                            <select name="status" id="edit_ta_status" class="form-select rounded-3" required>
-                                <option value="aktif">Aktif</option>
-                                <option value="tidak aktif">Tidak Aktif</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer border-0 pt-0">
-                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary rounded-pill px-4">Update Periode</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Tambah Prodi -->
+    <!-- Modal Tambah Divisi -->
     <div class="modal fade" id="modalTambahProdi" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
                 <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold">Tambah Program Studi</h5>
+                    <h5 class="modal-title fw-bold">Tambah Divisi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('admin.storeProdi') }}" method="POST">
                     @csrf
                     <div class="modal-body p-4">
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Nama Program Studi</label>
-                            <input type="text" name="nama" class="form-control rounded-3" placeholder="Contoh: Sistem Informasi" required>
+                            <label class="form-label fw-semibold">Nama Divisi</label>
+                            <input type="text" name="nama" class="form-control rounded-3" placeholder="Contoh: Integrasi Pengolahan dan Diseminasi Statistik" required>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Jenjang</label>
-                                <input type="text" name="jenjang" class="form-control rounded-3" placeholder="Contoh: S1" required>
+                                <label class="form-label fw-semibold">Kode / Singkatan</label>
+                                <input type="text" name="jenjang" class="form-control rounded-3" placeholder="Contoh: IPDS">
+                                <small class="text-muted">Singkatan divisi (opsional)</small>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Warna Label</label>
@@ -748,32 +440,33 @@
                     </div>
                     <div class="modal-footer border-0 pt-0">
                         <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary rounded-pill px-4">Simpan Prodi</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">Simpan Divisi</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal Edit Prodi -->
+    <!-- Modal Edit Divisi -->
     <div class="modal fade" id="modalEditProdi" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
                 <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold">Edit Program Studi</h5>
+                    <h5 class="modal-title fw-bold">Edit Divisi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="formEditProdi" method="POST">
                     @csrf @method('PUT')
                     <div class="modal-body p-4">
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Nama Program Studi</label>
+                            <label class="form-label fw-semibold">Nama Divisi</label>
                             <input type="text" name="nama" id="edit_prodi_nama" class="form-control rounded-3" required>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Jenjang</label>
-                                <input type="text" name="jenjang" id="edit_prodi_jenjang" class="form-control rounded-3" required>
+                                <label class="form-label fw-semibold">Kode / Singkatan</label>
+                                <input type="text" name="jenjang" id="edit_prodi_jenjang" class="form-control rounded-3">
+                                <small class="text-muted">Singkatan divisi (opsional)</small>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Warna Label</label>
@@ -796,7 +489,7 @@
                     </div>
                     <div class="modal-footer border-0 pt-0">
                         <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary rounded-pill px-4">Update Prodi</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">Update Divisi</button>
                     </div>
                 </form>
             </div>

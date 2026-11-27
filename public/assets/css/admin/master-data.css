@@ -108,9 +108,16 @@ body.admin-page {
 .data-table-wrapper {
     background: #fff;
     border-radius: 20px;
-    overflow: hidden;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
     border: 1px solid #e2e8f0;
+}
+
+.data-table-wrapper .table {
+    min-width: 680px;
+    white-space: nowrap;
 }
 
 .table thead th {

@@ -36,12 +36,12 @@ class InformasiDashboard extends Model
                 'sejarah'                 => '',
                 'jam_operasional'         => 'Senin – Jumat: 08.00 – 16.00 WIB',
                 'deskripsi_jam_operasional' => 'Sistem monitoring dapat diakses 24 jam.',
-                'alamat_lokasi'           => 'Gedung Fasilkom, Kampus Utama Universitas.',
-                'link_maps'               => 'https://maps.google.com/?q=Fasilkom+Unsri',
-                'email_kontak'            => 'humas@ilkom.unsri.ac.id',
-                'telp_kontak'             => '(+62)37249',
-                'website_kontak'          => 'www.ilkom.unsri.ac.id',
-                'nama_fakultas'           => 'Fakultas Ilmu Komputer',
+                'alamat_lokasi'           => 'Kantor BPS Kabupaten Muara Enim.',
+                'link_maps'               => 'https://maps.google.com/?q=BPS+Kabupaten+Muara+Enim',
+                'email_kontak'            => 'bps1603@bps.go.id',
+                'telp_kontak'             => '(0734) 421147',
+                'website_kontak'          => 'muaraenimkab.bps.go.id',
+                'nama_fakultas'           => 'BPS Kabupaten Muara Enim',
                 'deskripsi_banner'        => '',
             ]);
         }

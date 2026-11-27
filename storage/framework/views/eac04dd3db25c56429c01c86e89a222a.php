@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('title', 'Pusat Rekapitulasi Data - Admin'); ?>
 <?php $__env->startSection('body-class', 'dashboard-page admin-page'); ?>
 
@@ -27,7 +29,7 @@
                             <select id="filterPeriode" class="form-select border-0 shadow-sm rounded-pill px-4">
                                 <option value="">Semua Tahun Ajaran</option>
                                 <?php $__currentLoopData = $tahunAjarans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ta): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($ta->id_tahun_ajaran); ?>"><?php echo e($ta->tahun_ajaran); ?></option>
+                                    <option value="<?php echo e($ta->id_tahun_ajaran); ?>"><?php echo e($ta->label_periode); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
                         </div>
@@ -41,10 +43,7 @@
                             <i class="fas fa-user-graduate"></i>
                             <span>Rekap Siswa</span>
                         </button>
-                        <button class="rekap-tab-btn" id="guru-tab" data-bs-toggle="pill" data-bs-target="#guru-pane" type="button" role="tab">
-                            <i class="fas fa-chalkboard-teacher"></i>
-                            <span>Rekap Guru</span>
-                        </button>
+                        
                     </div>
                 </div>
 
@@ -93,21 +92,7 @@
                         </div>
                     </div>
 
-                    <!-- Tab Guru -->
-                    <div class="tab-pane fade" id="guru-pane" role="tabpanel">
-                        <div class="rekap-grid">
-                            <div class="rekap-card">
-                                <div class="rekap-card-icon icon-warning">
-                                    <i class="fas fa-user-tie"></i>
-                                </div>
-                                <div class="rekap-card-count" id="statTotalGuru"><?php echo e($stats['total_guru']); ?></div>
-                                <h5 class="rekap-card-title">Total Guru Pembimbing</h5>
-                                <a href="javascript:void(0)" data-url="<?php echo e(route('admin.rekap.guru')); ?>" class="rekap-btn-download btn-preview-pdf">
-                                    <i class="fas fa-file-pdf"></i>
-                                    <span>Preview Daftar Guru</span>
-                                </a>
-                            </div>
-                        </div>
+                    
                     </div>
                 </div>
             </div>
@@ -139,7 +124,7 @@
                     <div id="pdfCanvasContainer">
                         <div id="pdfLoadingIndicator">
                             <div class="loader-logo-container">
-                                <img src="<?php echo e(asset('images/unsri-pride.png')); ?>" alt="UNSRI">
+                                <img src="<?php echo e(asset('images/loogo.png')); ?>" alt="BPS">
                             </div>
                             
                         </div>

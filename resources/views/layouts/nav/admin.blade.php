@@ -18,16 +18,16 @@
     <div class="top-info-bar d-none d-md-block">
         <div class="container">
             <div><i class="fas fa-clock"></i> 8:00AM - 4:00PM | Senin - Jum'at</div>
-            <div><i class="fas fa-envelope"></i> humas@ilkom.unsri.ac.id</div>
+            <div><i class="fas fa-envelope"></i> bps1603@bps.go.id</div>
         </div>
     </div>
     <nav class="custom-navbar">
         <div class="container">
             <a class="navbar-brand" href="{{ route('admin.admin') }}">
-                <img src="{{ asset('images/unsri-pride.png') }}" alt="Logo" width="40" class="me-2">
+                <img src="{{ asset('images/loogo.png') }}" alt="Logo BPS" width="40" class="me-2">
                 <div class="brand-text">
-                    <div class="subtitle">FACULTY OF</div>
-                    <div class="main-title">COMPUTER SCIENCE</div>
+                    <div class="subtitle">BADAN PUSAT STATISTIK</div>
+                    <div class="main-title">KABUPATEN MUARA ENIM</div>
                 </div>
             </a>
 
@@ -41,10 +41,7 @@
                         <a class="nav-link {{ Route::is('admin.admin') ? 'active' : '' }}" href="{{ route('admin.admin') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Route::is('admin.kelolaSiswa') || Route::is('admin.kelolaGuru') || Route::is('admin.kelolaPembimbing') ? 'active' : '' }}" href="{{ route('admin.kelolaSiswa') }}">Kelola Akun</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::is('admin.verifikasiRegistrasi') ? 'active' : '' }}" href="{{ route('admin.verifikasiRegistrasi') }}">Verifikasi</a>
+                        <a class="nav-link {{ Route::is('admin.kelolaSiswa') || Route::is('admin.kelolaPembimbing') ? 'active' : '' }}" href="{{ route('admin.kelolaSiswa') }}">Kelola Akun</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Route::is('admin.rekap') ? 'active' : '' }}" href="{{ route('admin.rekap') }}">Rekap</a>

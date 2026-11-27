@@ -690,13 +690,21 @@ body.admin-page {
     background: white;
     border-radius: var(--p-radius-lg);
     border: 1px solid #e2e8f0;
-    overflow: hidden;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
 }
 
 .main-table {
     width: 100%;
+    min-width: 780px;
     border-collapse: separate;
     border-spacing: 0;
+}
+
+.main-table th,
+.main-table td {
+    white-space: nowrap;
 }
 
 .main-table thead th {
@@ -936,4 +944,69 @@ body.admin-page {
     height: auto;
     filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.15));
     animation: pdf-breathing 2.5s infinite ease-in-out;
+}
+
+/* ============================================================
+   RESPONSIVE OPTIMIZATIONS (Tablet, Mobile, Split-Screen)
+============================================================ */
+@media (max-width: 991.98px) {
+    .management-container {
+        padding: 1.25rem 0.75rem;
+    }
+
+    .management-header {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .header-title {
+        flex-wrap: wrap;
+    }
+
+    .header-actions,
+    .search-form,
+    .header-actions .p-input-wrapper,
+    .search-form .p-input-wrapper {
+        width: 100% !important;
+    }
+
+    .tabs-nav {
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+    }
+
+    .tab-button {
+        flex: 1 1 calc(50% - 0.5rem) !important;
+        min-width: 140px;
+        padding: 10px 12px !important;
+        font-size: 0.85rem !important;
+        text-align: center;
+    }
+
+    .main-table-card {
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .header-title h5 {
+        font-size: 1.35rem;
+    }
+
+    .tab-button {
+        flex: 1 1 100% !important;
+    }
+
+    .btn-primary-custom {
+        width: 100%;
+        justify-content: center;
+    }
 }

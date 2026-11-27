@@ -143,13 +143,13 @@ class SiswaKegiatanController extends SiswaBaseController
         $namaLokasi = "Lokasi Magang";
 
         if ($lokasis->isEmpty()) {
-            // Fallback jika belum ada data di database (Fasilkom Default)
-            $targetLat = -2.9847200554793494;
-            $targetLng = 104.73225951187132;
+            // Fallback jika belum ada data di database (BPS Muara Enim Default)
+            $targetLat = -3.6558;
+            $targetLng = 103.7744;
             $maxRadius = 500;
             $jarak = $this->calculateDistance($lat, $lng, $targetLat, $targetLng);
             $isValidLocation = ($jarak <= $maxRadius);
-            $namaLokasi = "Fasilkom";
+            $namaLokasi = "BPS Muara Enim";
         } else {
             $jarakTerdekat = null;
             $lokasiTerdekat = null;

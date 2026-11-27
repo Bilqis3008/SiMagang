@@ -1,6 +1,6 @@
 @extends('layouts.nav.siswa')
 
-@section('title', 'Profil Saya - SIM Magang Fasilkom Unsri')
+@section('title', 'Profil Saya - SIM Magang BPS Muara Enim')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/siswa/profil-siswa.css') }}">

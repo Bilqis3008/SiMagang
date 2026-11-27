@@ -56,6 +56,12 @@ class SiswaBaseController extends Controller
         $internStart = $user->tgl_mulai_magang ? Carbon::parse($user->tgl_mulai_magang)->startOfDay() : null;
         $internEnd   = $user->tgl_selesai_magang ? Carbon::parse($user->tgl_selesai_magang)->startOfDay() : null;
 
+        // Jika siswa belum memiliki tanggal mulai magang atau tanggal mulai magang belum tiba, jangan buat riwayat alpa lampau
+        if (!$internStart || Carbon::now()->startOfDay()->lt($internStart)) {
+            // Hanya kembalikan data absensi nyata yang ada di database
+            return $user->absensis()->get();
+        }
+
         // Use student's internship start date or current month's start
         $start = $startDate ? Carbon::parse($startDate) : ($internStart ?: Carbon::now()->startOfMonth());
         $end   = $endDate   ? Carbon::parse($endDate)   : Carbon::now();
@@ -113,6 +119,10 @@ class SiswaBaseController extends Controller
     {
         $internStart = $user->tgl_mulai_magang ? Carbon::parse($user->tgl_mulai_magang)->startOfDay() : null;
         $internEnd   = $user->tgl_selesai_magang ? Carbon::parse($user->tgl_selesai_magang)->startOfDay() : null;
+
+        if (!$internStart || Carbon::now()->startOfDay()->lt($internStart)) {
+            return $user->logbooks()->get();
+        }
 
         $start = $startDate ? Carbon::parse($startDate) : ($internStart ?: Carbon::now()->startOfMonth());
         $end   = $endDate   ? Carbon::parse($endDate)   : Carbon::now();

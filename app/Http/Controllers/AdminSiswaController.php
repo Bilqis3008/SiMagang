@@ -41,7 +41,7 @@ class AdminSiswaController extends Controller
         $today = Carbon::now()->toDateString();
 
         // 1. Siswa Aktif
-        $query = Siswa::with(['guru', 'pembimbing', 'absensis' => function ($q) use ($today) {
+        $query = Siswa::with(['pembimbing', 'absensis' => function ($q) use ($today) {
             $q->whereDate('tanggal', $today);
         }]);
 
@@ -83,7 +83,7 @@ class AdminSiswaController extends Controller
         }
 
         // 2. Riwayat Siswa (Selesai)
-        $riwayatQuery = Siswa::with(['guru', 'pembimbing'])
+        $riwayatQuery = Siswa::with(['pembimbing'])
             ->where(function($q) {
                 $q->where('status', 'selesai')
                   ->orWhere('tgl_selesai_magang', '<', now());
@@ -113,15 +113,14 @@ class AdminSiswaController extends Controller
             ];
         });
 
-        $gurus = \App\Models\Guru::orderBy('nama')->get();
         $pembimbings = \App\Models\Pembimbing::orderBy('nama')->get();
-        $periodeOptions = TahunAjaran::orderBy('tgl_mulai', 'desc')->get();
+        $periodeOptions = TahunAjaran::getOtomatis();
         $lokasis = \App\Models\LokasiAbsensi::orderBy('nama_lokasi')->get();
 
         return view('admin.kelolaSiswa', [
             'user' => $admin,
             'siswa' => $siswa,
-            'gurus' => $gurus,
+            
             'pembimbings' => $pembimbings,
             'search' => $search,
             'groupedSiswas' => $groupedSiswas,
@@ -306,7 +305,6 @@ class AdminSiswaController extends Controller
             'nisn_ketua' => ['nullable', 'string', 'max:20'],
             'id_tahun_ajaran' => ['nullable', 'exists:tahun_ajaran,id_tahun_ajaran'],
             'surat_balasan' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2048'],
-            'id_guru' => ['nullable', 'string', 'exists:guru,id_guru'],
             'id_pembimbing' => ['nullable', 'exists:pembimbing,id_pembimbing'],
             'tgl_mulai_magang' => ['nullable', 'date'],
             'tgl_selesai_magang' => ['nullable', 'date'],
@@ -321,6 +319,7 @@ class AdminSiswaController extends Controller
             $validated['surat_balasan'] = $path;
         }
 
+        $validated['perusahaan'] = $validated['perusahaan'] ?? 'BPS Kabupaten Muara Enim';
         $validated['status'] = 'aktif';
         Siswa::create($validated);
 
@@ -350,7 +349,6 @@ class AdminSiswaController extends Controller
             'nisn_ketua' => ['nullable', 'string', 'max:20'],
             'id_tahun_ajaran' => ['nullable', 'exists:tahun_ajaran,id_tahun_ajaran'],
             'surat_balasan' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2048'],
-            'id_guru' => ['nullable', 'string', 'exists:guru,id_guru'],
             'id_pembimbing' => ['nullable', 'exists:pembimbing,id_pembimbing'],
             'tgl_mulai_magang' => ['nullable', 'date'],
             'tgl_selesai_magang' => ['nullable', 'date'],
@@ -389,35 +387,7 @@ class AdminSiswaController extends Controller
             ->with('success', 'Akun siswa berhasil dihapus.');
     }
 
-    /**
-     * Cetak Penilaian dari Guru Pembimbing
-     */
-    public function cetakPenilaianGuru(Request $request, $nisn)
-    {
-        $this->authorizeReportViewer();
-        $siswa = Siswa::where('nisn', $nisn)->firstOrFail();
-        
-        $penilaian = $siswa->penilaians()
-            ->where('pemberi_nilai', 'Guru Pembimbing')
-            ->with(['penilaianDetails.kriteria'])
-            ->first();
-
-        if (!$penilaian) {
-            if ($request->ajax() || $request->wantsJson()) {
-                return response()->json(['message' => 'Penilaian belum diinputkan oleh Guru.'], 404);
-            }
-            return back()->with('warning', 'Penilaian belum diinputkan oleh Guru.');
-        }
-
-        $guru = $siswa->guru;
-        $pdf = Pdf::loadView('guru.printPenilaian', [
-            'user' => $guru, 
-            'siswa' => $siswa, 
-            'penilaian' => $penilaian,
-            'konfigurasi' => KonfigurasiLaporan::where('tipe_laporan', 'penilaian_guru')->first()
-        ]);
-        return $pdf->stream("Penilaian_Guru_{$siswa->nisn}.pdf");
-    }
+    
 
     /**
      * Cetak Penilaian dari Pembimbing Lapangan

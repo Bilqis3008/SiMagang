@@ -15,12 +15,12 @@
         
         <div class="mb-3">
             <label class="label-premium">Baris Header 1</label>
-            <input type="text" name="konfigurasi[{{ $index }}][header_1]" class="form-control input-premium" value="{{ $lap->header_1 }}" placeholder="Contoh: Universitas Sriwijaya">
+            <input type="text" name="konfigurasi[{{ $index }}][header_1]" class="form-control input-premium" value="{{ $lap->header_1 }}" placeholder="Contoh: Badan Pusat Statistik">
         </div>
         
         <div class="mb-3">
             <label class="label-premium">Baris Header 2</label>
-            <input type="text" name="konfigurasi[{{ $index }}][header_2]" class="form-control input-premium" value="{{ $lap->header_2 }}" placeholder="Contoh: Fakultas Ilmu Komputer">
+            <input type="text" name="konfigurasi[{{ $index }}][header_2]" class="form-control input-premium" value="{{ $lap->header_2 }}" placeholder="Contoh: Kabupaten Muara Enim">
         </div>
 
         @if($lap->tipe_laporan != 'absensi_individu' && $lap->tipe_laporan != 'kegiatan_mingguan')

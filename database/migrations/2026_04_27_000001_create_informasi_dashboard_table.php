@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('jam_operasional')->nullable()->default('Senin – Jumat: 08.00 – 16.00 WIB');
             $table->text('deskripsi_jam_operasional')->nullable();
             $table->string('alamat_lokasi')->nullable();
-            $table->string('link_maps')->nullable()->default('https://maps.google.com/?q=Fasilkom+Unsri');
+            $table->string('link_maps')->nullable()->default('https://maps.google.com/?q=BPS+Kabupaten+Muara+Enim');
             $table->string('email_kontak')->nullable();
             $table->string('telp_kontak')->nullable();
             $table->string('website_kontak')->nullable();
-            $table->string('nama_fakultas')->nullable()->default('Fakultas Ilmu Komputer');
+            $table->string('nama_fakultas')->nullable()->default('BPS Kabupaten Muara Enim');
             $table->text('deskripsi_banner')->nullable();
             $table->timestamps();
         });

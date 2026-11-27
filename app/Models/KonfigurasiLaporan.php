@@ -17,5 +17,6 @@ class KonfigurasiLaporan extends Model
         'color_secondary',
         'background_color',
         'template_isi',
+        'predikat_nilai',
     ];
 }

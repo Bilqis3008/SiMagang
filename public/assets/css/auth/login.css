@@ -27,8 +27,8 @@ body.login-page {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.4)), 
-                url("/images/unsri.jpg") no-repeat center center / cover;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.45)), 
+                url("/images/kantor-bps.jpg") no-repeat center center / cover;
     background-attachment: fixed;
     padding: 10px;
     color: var(--text-dark);
@@ -314,8 +314,8 @@ body.login-page {
     body.login-page {
         padding: 15px;
         background: #f8fafc;
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.4)), 
-                url("/images/unsri.jpg") no-repeat center center / cover;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.45)), 
+                url("/images/kantor-bps.jpg") no-repeat center center / cover;
         height: auto;
         min-height: 100vh;
         overflow-y: auto;

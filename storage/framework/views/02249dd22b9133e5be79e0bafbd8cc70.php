@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('title', 'Manajemen Siswa - Monitoring Siswa Magang'); ?>
 <?php $__env->startSection('body-class', 'dashboard-page admin-page'); ?>
 
@@ -11,11 +13,11 @@
         data-jurnal-url="<?php echo e(route('admin.rekap.jurnal', ['nisn' => ':nisn'])); ?>"
         data-absensi-url="<?php echo e(route('admin.rekap.absensi', ['nisn' => ':nisn'])); ?>"
         data-kelompok-url="<?php echo e(route('admin.rekap.kelompok', ['nisn' => ':nisn'])); ?>"
-        data-nilai-guru-url="<?php echo e(route('admin.rekap.nilaiGuru', ['nisn' => ':nisn'])); ?>"
+        
         data-nilai-pembimbing-url="<?php echo e(route('admin.rekap.nilaiPembimbing', ['nisn' => ':nisn'])); ?>"
         data-laporan-akhir-url="<?php echo e(route('admin.rekap.laporanAkhir', ['nisn' => ':nisn'])); ?>"
         data-sertifikat-url="<?php echo e(route('admin.rekap.sertifikat', ['nisn' => ':nisn'])); ?>"
-        data-asset-loader="<?php echo e(asset('images/unsri-pride.png')); ?>">
+        data-asset-loader="<?php echo e(asset('images/loogo.png')); ?>">
 
         <!-- Global Navigation Tabs: Siswa, Guru, Pembimbing -->
         <div class="tabs-wrapper border-0 bg-transparent mb-4">
@@ -25,11 +27,7 @@
                     <i class="fas fa-users"></i>
                     <span>Siswa</span>
                 </a>
-                <a href="<?php echo e(route('admin.kelolaGuru')); ?>"
-                    class="tab-button text-decoration-none flex-fill justify-content-center text-center <?php echo e(Route::is('admin.kelolaGuru') ? 'active' : ''); ?>">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                    <span>Guru</span>
-                </a>
+                
                 <a href="<?php echo e(route('admin.kelolaPembimbing')); ?>"
                     class="tab-button text-decoration-none flex-fill justify-content-center text-center <?php echo e(Route::is('admin.kelolaPembimbing') ? 'active' : ''); ?>">
                     <i class="fas fa-user-tie"></i>
@@ -145,8 +143,6 @@
                                                 data-tahun_ajaran="<?php echo e($g['leader']->tahunAjaran->tahun_ajaran ?? '-'); ?>"
                                                 data-mulai="<?php echo e($g['leader']->tgl_mulai_magang ? \Carbon\Carbon::parse($g['leader']->tgl_mulai_magang)->format('d M Y') : '-'); ?>"
                                                 data-selesai="<?php echo e($g['leader']->tgl_selesai_magang ? \Carbon\Carbon::parse($g['leader']->tgl_selesai_magang)->format('d M Y') : '-'); ?>"
-                                                data-guru-nama="<?php echo e($g['leader']->guru->nama ?? '-'); ?>"
-                                                data-guru-nip="<?php echo e($g['leader']->guru->id_guru ?? '-'); ?>"
                                                 data-pl-nama="<?php echo e($g['leader']->pembimbing->nama ?? '-'); ?>"
                                                 data-pl-nip="<?php echo e($g['leader']->pembimbing->id_pembimbing ?? '-'); ?>"
                                                 data-pl-hp="<?php echo e($g['leader']->pembimbing->no_telp ?? '-'); ?>"
@@ -200,11 +196,7 @@
                                                     <span class="status-dot belum"></span> Belum Absen
                                                 </span>
                                             <?php endif; ?>
-                                            <span class="card-guru-info">
-                                                <i class="fas fa-chalkboard-teacher me-1"></i>
-                                                <?php echo e(Str::limit($g['leader']->guru->nama ?? '-', 15)); ?>
-
-                                            </span>
+                                            
                                         </div>
 
                                         <div class="action-grid">
@@ -295,9 +287,6 @@
                                                         data-tahun_ajaran="<?php echo e($s->tahunAjaran->tahun_ajaran ?? '-'); ?>"
                                                         data-mulai="<?php echo e($s->tgl_mulai_magang ? \Carbon\Carbon::parse($s->tgl_mulai_magang)->format('d M Y') : '-'); ?>"
                                                         data-selesai="<?php echo e($s->tgl_selesai_magang ? \Carbon\Carbon::parse($s->tgl_selesai_magang)->format('d M Y') : '-'); ?>"
-                                                        data-guru-nama="<?php echo e($s->guru->nama ?? '-'); ?>"
-                                                        data-guru-nip="<?php echo e($s->guru->id_guru ?? '-'); ?>"
-                                                        data-guru-hp="<?php echo e($s->guru->no_hp ?? '-'); ?>"
                                                         data-pl-nama="<?php echo e($s->pembimbing->nama ?? '-'); ?>"
                                                         data-pl-nip="<?php echo e($s->pembimbing->id_pembimbing ?? '-'); ?>"
                                                         data-pl-hp="<?php echo e($s->pembimbing->no_telp ?? '-'); ?>"
@@ -319,7 +308,6 @@
                                                         data-tipe_magang="<?php echo e($s->tipe_magang); ?>"
                                                         data-nisn_ketua="<?php echo e($s->nisn_ketua); ?>"
                                                         data-surat_balasan="<?php echo e($s->surat_balasan); ?>"
-                                                        data-guru-nip="<?php echo e($s->id_guru); ?>"
                                                         data-pl-nip="<?php echo e($s->id_pembimbing); ?>"
                                                         data-mulai_raw="<?php echo e($s->tgl_mulai_magang ? \Carbon\Carbon::parse($s->tgl_mulai_magang)->format('Y-m-d') : ''); ?>"
                                                         data-selesai_raw="<?php echo e($s->tgl_selesai_magang ? \Carbon\Carbon::parse($s->tgl_selesai_magang)->format('Y-m-d') : ''); ?>"
@@ -482,8 +470,6 @@
                                                     data-tahun_ajaran="<?php echo e($g['leader']->tahunAjaran->tahun_ajaran ?? '-'); ?>"
                                                     data-mulai="<?php echo e($g['leader']->tgl_mulai_magang ? \Carbon\Carbon::parse($g['leader']->tgl_mulai_magang)->format('d M Y') : '-'); ?>"
                                                     data-selesai="<?php echo e($g['leader']->tgl_selesai_magang ? \Carbon\Carbon::parse($g['leader']->tgl_selesai_magang)->format('d M Y') : '-'); ?>"
-                                                    data-guru-nama="<?php echo e($g['leader']->guru->nama ?? '-'); ?>"
-                                                    data-guru-nip="<?php echo e($g['leader']->guru->id_guru ?? '-'); ?>"
                                                     data-pl-nama="<?php echo e($g['leader']->pembimbing->nama ?? '-'); ?>"
                                                     data-pl-nip="<?php echo e($g['leader']->pembimbing->id_pembimbing ?? '-'); ?>"
                                                     data-pl-hp="<?php echo e($g['leader']->pembimbing->no_telp ?? '-'); ?>">
@@ -576,9 +562,6 @@
                                                             data-tahun_ajaran="<?php echo e($rs->tahunAjaran->tahun_ajaran ?? '-'); ?>"
                                                             data-mulai="<?php echo e($rs->tgl_mulai_magang ? \Carbon\Carbon::parse($rs->tgl_mulai_magang)->format('d M Y') : '-'); ?>"
                                                             data-selesai="<?php echo e($rs->tgl_selesai_magang ? \Carbon\Carbon::parse($rs->tgl_selesai_magang)->format('d M Y') : '-'); ?>"
-                                                            data-guru-nama="<?php echo e($rs->guru->nama ?? '-'); ?>"
-                                                            data-guru-nip="<?php echo e($rs->guru->id_guru ?? '-'); ?>"
-                                                            data-guru-hp="<?php echo e($rs->guru->no_hp ?? '-'); ?>"
                                                             data-pl-nama="<?php echo e($rs->pembimbing->nama ?? '-'); ?>"
                                                             data-pl-nip="<?php echo e($rs->pembimbing->id_pembimbing ?? '-'); ?>"
                                                             data-pl-hp="<?php echo e($rs->pembimbing->no_telp ?? '-'); ?>"
@@ -597,11 +580,7 @@
                                                         </button>
                                                     </div>
                                                     <div class="action-group justify-content-end">
-                                                        <button class="btn-premium-circle btn-star-p btn-preview-pdf"
-                                                            data-url="<?php echo e(route('admin.rekap.nilaiGuru', $rs->nisn)); ?>"
-                                                            title="Penilaian Guru">
-                                                            <i class="fas fa-star"></i>
-                                                        </button>
+                                                        
                                                         <button class="btn-premium-circle btn-user-check-p btn-preview-pdf"
                                                             data-url="<?php echo e(route('admin.rekap.nilaiPembimbing', $rs->nisn)); ?>"
                                                             title="Penilaian Pembimbing">
@@ -749,7 +728,7 @@
                     <div id="pdfCanvasContainer">
                         <div id="pdfLoadingIndicator">
                             <div class="loader-logo-container">
-                                <img src="<?php echo e(asset('images/unsri-pride.png')); ?>" alt="UNSRI">
+                                <img src="<?php echo e(asset('images/loogo.png')); ?>" alt="BPS">
                             </div>
                             
                         </div>
@@ -759,7 +738,7 @@
                             <p>Gagal memuat file PDF.<br><small>Coba gunakan tombol Unduh.</small></p>
                         </div>
                     </div>
-                </div
+                </div>
             </div>
         </div>
     </div>
@@ -777,5 +756,6 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
 <?php $__env->stopSection(); ?>
+
 
 <?php echo $__env->make('layouts.nav.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\SiswaMagang\resources\views/admin/kelolaSiswa.blade.php ENDPATH**/ ?>

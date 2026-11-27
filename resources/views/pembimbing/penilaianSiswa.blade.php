@@ -405,7 +405,7 @@
                     <div id="pdfCanvasContainer">
                         <div id="pdfLoadingIndicator">
                             <div class="loader-logo-container">
-                                <img src="{{ asset('images/unsri-pride.png') }}" alt="UNSRI">
+                                <img src="{{ asset('images/loogo.png') }}" alt="BPS">
                             </div>
                             
                         </div>
